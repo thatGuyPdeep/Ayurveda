@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  /* Card Components */
+  .card {
+    @apply bg-card text-card-foreground rounded-lg border shadow-sm;
+  }
+  
+  .card-elevated {
+    @apply bg-white rounded-lg shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300;
+  }
+  
+  .card-outlined {
+    @apply bg-white rounded-lg border-2 border-primary-200 hover:border-primary-300 transition-colors duration-200;
+  }
+  
+  .card-hover {
+    @apply transform hover:scale-105 transition-transform duration-200;
+  }
+
+  /* Badge Components */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+  
+  .badge-success {
+    @apply bg-green-100 text-green-800;
+  }
+  
+  .badge-warning {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+  
+  .badge-error {
+    @apply bg-red-100 text-red-800;
+  }
+  
+  .badge-golden {
+    @apply bg-secondary-100 text-secondary-800;
+  }
+  
+  .badge-emerald {
+    @apply bg-primary-100 text-primary-800;
+  }
+
+  /* Button Components */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
+  }
+  
+  .btn-primary {
+    @apply bg-primary-500 text-white hover:bg-primary-600 h-10 px-4 py-2;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary-500 text-white hover:bg-secondary-600 h-10 px-4 py-2;
+  }
+  
+  .btn-outline {
+    @apply border border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white h-10 px-4 py-2;
+  }
+  
+  .btn-ghost {
+    @apply text-primary-500 hover:bg-primary-50 h-10 px-4 py-2;
+  }
+  
+  .btn-sm {
+    @apply h-8 px-3 text-xs;
+  }
+  
+  .btn-lg {
+    @apply h-12 px-8 text-base;
+  }
+
+  /* Input Components */
+  .input {
+    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  
+  .input-error {
+    @apply border-destructive focus-visible:ring-destructive;
+  }
+
+  /* Navigation */
+  .nav-link {
+    @apply text-foreground hover:text-primary-500 transition-colors duration-200 font-medium;
+  }
+  
+  .nav-link-active {
+    @apply text-primary-500 font-semibold;
+  }
+
+  /* Product Card */
+  .product-card {
+    @apply bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow duration-300;
+  }
+  
+  .product-image {
+    @apply w-full h-48 object-cover;
+  }
+  
+  .product-title {
+    @apply font-serif text-lg font-semibold text-gray-900 mb-2;
+  }
+  
+  .product-price {
+    @apply text-primary-600 font-bold text-xl;
+  }
+  
+  .product-rating {
+    @apply flex items-center text-yellow-400;
+  }
+
+  /* Utility Classes */
+  .text-gradient-emerald {
+    @apply bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-golden {
+    @apply bg-gradient-to-r from-secondary-600 to-secondary-400 bg-clip-text text-transparent;
+  }
+  
+  .bg-gradient-emerald {
+    @apply bg-gradient-to-r from-primary-600 to-primary-500;
+  }
+  
+  .bg-gradient-golden {
+    @apply bg-gradient-to-r from-secondary-600 to-secondary-500;
+  }
+  
+  .shadow-emerald {
+    box-shadow: 0 4px 14px rgba(27, 94, 32, 0.15);
+  }
+  
+  .shadow-golden {
+    box-shadow: 0 4px 14px rgba(255, 179, 0, 0.15);
+  }
+
+  /* Animation Classes */
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+  
+  .animate-bounce-gentle {
+    animation: bounceGentle 2s infinite;
+  }
+  
+  .animate-pulse-soft {
+    animation: pulseSoft 2s infinite;
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Keyframes */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes bounceGentle {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-8px);
+  }
+  60% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes pulseSoft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px rgba(27, 94, 32, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(27, 94, 32, 0.4), 0 0 30px rgba(27, 94, 32, 0.2);
+  }
+}

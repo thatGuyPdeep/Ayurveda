@@ -1,103 +1,133 @@
 # AyurvedaCart - Modern UI Design System
 
+*⚠️ IMPORTANT: This document has been superseded by [THEME.MD](./THEME.MD) which contains the current implementation. This file is maintained for reference and will be updated to reflect the new Ayurvedic theme.*
+
 ## Design Philosophy
 
 ### Vision
-Create a harmonious blend of traditional Ayurvedic aesthetics with modern, accessible, and user-friendly design principles. The design system should evoke trust, authenticity, and wellness while maintaining contemporary usability standards.
+Create a dopamine-stimulating, trust-building experience that honors Ayurvedic traditions while appealing to modern wellness seekers. The design system combines ancient wisdom with contemporary accessibility standards to deliver authentic healing experiences.
 
 ### Core Principles
 
-#### 1. Authentic Heritage
-- Draw inspiration from traditional Indian art and Ayurvedic symbolism
-- Use natural, earth-toned color palettes
-- Incorporate subtle traditional patterns and motifs
-- Maintain cultural sensitivity and respect
+#### 1. Ancient Wisdom, Modern Healing
+- **Authentic Colors**: Deep emerald greens, royal saffron, and reddish maroon reflecting traditional Ayurvedic heritage
+- **Dopamine Design**: Strategic use of warm golden yellows to stimulate optimism and engagement
+- **Traditional Typography**: Playfair Display for headings, Lato for body text combining elegance with readability
+- **Cultural Respect**: Authentic representation without cultural appropriation
 
-#### 2. Modern Accessibility
-- WCAG 2.1 AA compliance for all interactive elements
-- High contrast ratios for readability
-- Keyboard navigation support
-- Screen reader compatibility
-- Multi-language support
+#### 2. Accessibility First
+- **WCAG 2.1 AA Compliance**: All color combinations tested for proper contrast ratios
+- **High Contrast**: Charcoal black (#222222) on ivory (#FAF6F0) provides 15.2:1 ratio
+- **Focus Indicators**: Saffron (#F5B000) focus rings for clear keyboard navigation
+- **Screen Reader Support**: Semantic HTML with proper ARIA labels
+- **Multi-language Ready**: Font stack supports international character sets
 
-#### 3. Trust & Credibility
-- Clean, professional layouts
-- Consistent visual hierarchy
-- Clear product information display
-- Authentic photography and imagery
-- Transparent pricing and policies
+#### 3. Trust Through Authenticity
+- **Natural Palettes**: Earth-toned backgrounds (ivory, pale sage) create calming environments
+- **Consistent Hierarchy**: Clear information architecture using typography scale
+- **Quality Indicators**: Maroon accents (#8B1E3F) for premium trust elements
+- **Transparent Communication**: Clear product information and honest pricing
 
-#### 4. Wellness-Focused Experience
-- Calming, stress-free interface design
-- Intuitive navigation patterns
-- Reduced cognitive load
-- Mindful use of animations and transitions
-- Health-conscious content presentation
+#### 4. Wellness-Optimized Experience
+- **Stress-Free Navigation**: Soft rounded corners (xl/2xl) for dopamine-friendly interactions
+- **Calming Interactions**: Gentle hover animations and transitions
+- **Reduced Cognitive Load**: Clean layouts with plenty of white space
+- **Health-Conscious Design**: Colors and layouts that promote wellbeing
 
 ## Visual Identity
 
-### Brand Colors
+### Brand Colors (Updated for New Theme)
 
-#### Primary Palette
+*🔄 **Status**: Updated to match THEME.MD implementation*
+
+#### Primary Palette - Ayurvedic Heritage
 ```css
-/* Primary Green - Health & Nature */
---primary-green: #2E7D32;
---primary-green-light: #4CAF50;
---primary-green-dark: #1B5E20;
+/* Deep Emerald Green - Nature, healing, wealth, Ayurveda authenticity */
+--emerald-800: #014421;  /* Primary brand color */
+--emerald-700: #15803D;
+--emerald-600: #16A34A;
+--emerald-500: #22C55E;
+--emerald-400: #4ADE80;
+--emerald-300: #86EFAC;
+--emerald-200: #BBF7D0;
+--emerald-100: #DCFCE7;
+--emerald-50: #F0FDF4;
 
-/* Secondary Gold - Authenticity & Premium */
---secondary-gold: #FF8F00;
---secondary-gold-light: #FFC107;
---secondary-gold-dark: #E65100;
+/* Royal Saffron - Royalty, warmth, optimism, dopamine trigger */
+--saffron-500: #F5B000;  /* Primary CTA color */
+--saffron-600: #D97706;
+--saffron-400: #FBBF24;
+--saffron-300: #FCD34D;
+--saffron-200: #FDE68A;
+--saffron-100: #FEF3C7;
+--saffron-50: #FFFBEB;
 
-/* Tertiary Earth - Grounding & Stability */
---tertiary-brown: #5D4037;
---tertiary-brown-light: #8D6E63;
---tertiary-brown-dark: #3E2723;
+/* Reddish Maroon - Regal, luxurious, trust, traditional, grounding */
+--maroon-800: #8B1E3F;  /* Trust and premium elements */
+--maroon-700: #BE185D;
+--maroon-600: #DB2777;
+--maroon-500: #EC4899;
+--maroon-400: #F472B6;
+--maroon-300: #F9A8D4;
+--maroon-200: #FBCFE8;
+--maroon-100: #FCE7F3;
+--maroon-50: #FDF2F8;
 ```
 
-#### Neutral Palette
+#### Background & Neutral Palette
 ```css
+/* Primary Backgrounds */
+--ivory: #FAF6F0;        /* Main background - Clean, warm, calming */
+--pale-sage: #DDEAD0;    /* Secondary background - Calm, fresh, harmony */
+--sage-light: #E8F3DB;   /* Border and hover states */
+--sage-dark: #C9D7B8;    /* Darker sage variants */
+
 /* Text Colors */
---text-primary: #212121;
---text-secondary: #757575;
---text-disabled: #BDBDBD;
+--charcoal: #222222;     /* Primary text - Maximum readability */
+--text-secondary: #222222CC;  /* 80% opacity charcoal */
+--text-muted: #22222270;      /* 70% opacity charcoal */
 --text-inverse: #FFFFFF;
 
-/* Background Colors */
---bg-primary: #FFFFFF;
---bg-secondary: #FAFAFA;
---bg-tertiary: #F5F5F5;
---bg-overlay: rgba(0, 0, 0, 0.6);
-
-/* Border Colors */
---border-light: #E0E0E0;
---border-medium: #BDBDBD;
---border-dark: #757575;
+/* UI Element Colors */
+--border-light: #E8F3DB; /* Sage-light borders */
+--border-medium: #DDEAD0; /* Sage borders */
+--border-dark: #C9D7B8;  /* Sage-dark borders */
 ```
 
-#### Semantic Colors
+#### Semantic Colors (Ayurvedic Theme)
 ```css
 /* Status Colors */
---success: #4CAF50;
---warning: #FF9800;
---error: #F44336;
---info: #2196F3;
+--success: #014421;      /* Emerald green */
+--warning: #F5B000;      /* Saffron */
+--error: #8B1E3F;        /* Maroon */
+--info: #014421;         /* Emerald green */
 
 /* E-commerce Specific */
---price-color: #2E7D32;
---discount-color: #F44336;
---rating-color: #FF8F00;
---availability-in-stock: #4CAF50;
---availability-out-of-stock: #F44336;
+--price-color: #014421;              /* Deep emerald for prices */
+--discount-color: #8B1E3F;           /* Maroon for discounts */
+--rating-color: #F5B000;            /* Saffron for ratings */
+--availability-in-stock: #014421;    /* Emerald for in stock */
+--availability-out-of-stock: #8B1E3F; /* Maroon for out of stock */
+--add-to-cart: #F5B000;             /* Saffron for CTA buttons */
+--buy-now: #014421;                 /* Emerald for urgent actions */
 ```
 
-### Typography
+### Typography (Updated)
 
-#### Font Selection
-- **Primary Font**: 'Inter' - Modern, highly readable sans-serif
-- **Secondary Font**: 'Merriweather' - Traditional serif for headings
+*🔄 **Status**: Updated to match THEME.MD implementation*
+
+#### Font Selection - Ayurvedic Elegance
+- **Primary Font**: 'Playfair Display' - Elegant serif for headings and brand elements
+  - High-contrast, traditional aesthetic
+  - Excellent for creating premium feel
+  - Perfect for wellness branding
+- **Secondary Font**: 'Lato' - Modern, highly readable sans-serif for body text
+  - Clean, accessible design
+  - Excellent readability across all devices
+  - Professional yet approachable
 - **Accent Font**: 'Noto Sans Devanagari' - For Ayurvedic terms and Sanskrit text
+  - Authentic representation of Sanskrit terminology
+  - Cultural accuracy and respect
 
 #### Type Scale
 ```css

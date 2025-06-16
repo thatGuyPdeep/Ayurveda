@@ -1,29 +1,35 @@
 # AyurvedaCart - Website Content Strategy & Copy
 
+*⚠️ IMPORTANT: This document has been updated to reflect the new "Ancient Wisdom, Modern Healing" brand positioning and Ayurvedic theme.*
+
 ## Content Philosophy
 
-### Brand Voice & Tone
-- **Authentic**: Rooted in traditional Ayurvedic wisdom
-- **Trustworthy**: Scientifically backed, transparent information
-- **Caring**: Empathetic to health concerns and wellness journey
-- **Educational**: Informative without being overwhelming
-- **Accessible**: Complex concepts explained simply
+### Brand Voice & Tone (Updated)
+- **Ancient Wisdom**: Rooted in 5000-year-old Ayurvedic tradition with modern scientific validation
+- **Trustworthy**: Authentic, transparent, with certified products and expert guidance
+- **Caring**: Empathetic to health concerns with personalized wellness solutions
+- **Educational**: Informative without being overwhelming, making Ayurveda accessible
+- **Accessible**: Complex concepts explained simply with cultural respect
 
 ### Content Principles
-1. **Education First**: Every piece of content should educate users about Ayurveda
-2. **Transparency**: Clear information about products, processes, and policies
-3. **Cultural Respect**: Authentic representation of Ayurvedic traditions
-4. **User-Centric**: Address real user needs and pain points
-5. **SEO Optimized**: Strategic keyword integration without compromising quality
+1. **Ancient Wisdom, Modern Healing**: Balance traditional knowledge with contemporary needs
+2. **Transparency**: Clear information about products, processes, and authentic sourcing
+3. **Cultural Respect**: Authentic representation without appropriation
+4. **User-Centric**: Address real wellness needs with personalized solutions
+5. **SEO Optimized**: Strategic keyword integration maintaining quality and authenticity
 
-## Homepage Content
+## Homepage Content (Updated)
 
-### Hero Section
-**Primary Headline**: "Global Ayurvedic Wellness - Delivered Worldwide in 1-7 Days"
-**Secondary Headline**: "1000+ authentic Ayurvedic medicines across 17 medical specialties, stocked in worldwide distribution centers and delivered fast to your doorstep anywhere in the world"
+### Hero Section - New Messaging
+**Primary Headline**: "Ancient Wisdom, Modern Healing"  
+**Secondary Headline**: "Discover authentic Ayurvedic wellness solutions, sourced from 5000-year-old traditions and delivered to your modern lifestyle"
 
-**Call-to-Action**: "Shop Globally" / "Check Local Delivery"
-**Supporting Text**: "1000+ products in stock • 17 medical specialties • Same-day to 7-day global delivery • Multi-currency support • Expert consultation available"
+**Subheading**: "1000+ authentic medicines across 17 specialties • Global delivery in 1-7 days • Expert consultations available"
+
+**Call-to-Action**: "Start Your Wellness Journey" (Saffron button)  
+**Secondary CTA**: "Free Ayurvedic Consultation" (Emerald button)
+
+**Supporting Text**: "Trusted by thousands worldwide • Certified authentic products • Traditional formulations • Expert guidance • Fast global delivery"
 
 ### Value Propositions
 #### 1. Authenticity Guaranteed

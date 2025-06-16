@@ -1,0 +1,208 @@
+# AyurvedaCart Royal Wellness Platform
+
+## Project Context
+AyurvedaCart is a premium global e-commerce platform specializing in authentic Ayurvedic medicines and wellness products. We deliver royal-quality healing solutions with luxury service standards to customers in 50+ countries.
+
+### Royal Wellness Philosophy  
+- **Royal Authenticity**: Premium quality products verified by ancient traditions and modern certifications
+- **Luxury Service**: White-glove customer experience worthy of royalty with personalized attention  
+- **Global Healing**: Making authentic Ayurvedic wellness accessible worldwide with 1-7 day delivery
+- **Expert Guidance**: Certified Ayurvedic masters providing personalized consultations and recommendations
+
+## Technology Stack
+- **Frontend**: Next.js 14 (App Router), React 18, TypeScript 5
+- **Styling**: Tailwind CSS with royal design system and custom color palette
+- **Database**: Supabase (PostgreSQL) with Row Level Security (RLS)
+- **State Management**: Zustand (global), React Query (server state), React Hook Form (forms)
+- **UI Components**: Custom components with Radix UI primitives and Lucide React icons
+- **Authentication**: Supabase Auth with email/password and social providers
+- **Animations**: Framer Motion for smooth transitions and micro-interactions
+- **Validation**: Zod schemas for robust form and data validation
+
+## Royal Design System
+
+### Color Palette
+Our royal, healing color scheme creates luxury while maintaining accessibility and trust:
+
+#### Primary Colors (Royal Authority & Trust)
+- **Royal Purple**: `#6B46C1` - Primary brand color (trust, luxury, wisdom)
+- **Royal Purple Light**: `#8B5CF6` - Hover states and accents  
+- **Royal Purple Dark**: `#553C9A` - Active states and emphasis
+
+#### Secondary Colors (Healing & Premium)
+- **Healing Gold**: `#F59E0B` - Premium actions and highlights
+- **Healing Gold Light**: `#FCD34D` - Warm backgrounds and accents
+- **Healing Gold Dark**: `#D97706` - Active gold elements
+
+#### Accent Colors (Wellness & Nature)
+- **Emerald Green**: `#10B981` - Success, nature, wellness actions
+- **Soft Lavender**: `#A78BFA` - Calm, serenity, healing vibes
+- **Deep Indigo**: `#4338CA` - Authority, trust, premium features
+
+#### Wellness Backgrounds
+- **Calm**: `#E0E7FF` - Very light purple for peaceful sections
+- **Peace**: `#F3F4F6` - Soft gray for neutral areas  
+- **Warmth**: `#FEF3C7` - Warm cream for welcoming sections
+- **Trust**: `#DBEAFE` - Light blue for trust and security elements
+
+#### E-commerce Specific Colors
+- **Price**: `#059669` - Deep emerald for pricing displays
+- **Discount**: `#DC2626` - Red for discounts and urgency
+- **Rating**: `#F59E0B` - Gold for star ratings and reviews
+- **In Stock**: `#10B981` - Emerald for availability indicators
+- **Add to Cart**: `#6B46C1` - Royal purple for primary CTA buttons
+- **Buy Now**: `#F59E0B` - Gold for urgent purchase actions
+
+### Typography
+- **Display Font**: Merriweather (serif) - For headings and royal branding elements
+- **Body Font**: Inter (sans-serif) - For readable body text and interfaces
+- **Font Sizes**: Display Large (60px) → H6 (18px) with proper line heights
+
+### Component Patterns
+- **Buttons**: Royal purple gradient (primary), healing gold (secondary), emerald (wellness)
+- **Cards**: White backgrounds with soft shadows, hover animations with royal shadow
+- **Forms**: Rounded corners with royal focus states and emerald success indicators
+- **Navigation**: Clean hierarchy with royal purple active states
+
+## Business Domain Knowledge
+
+### Medical Specialties (17 Categories)
+1. **Cardiology** - Heart and cardiovascular health solutions
+2. **Dermatology** - Skin conditions and beauty treatments
+3. **Gynecology** - Women's reproductive health and wellness
+4. **Classical** - Traditional Ayurvedic formulations and remedies
+5. **Gastroenterology** - Digestive system health and gut wellness
+6. **General Medicine** - Common health conditions and daily wellness
+7. **Neurology** - Nervous system and mental health support
+8. **Orthopedics** - Bone and joint health, mobility solutions
+9. **Endocrinology** - Hormonal balance and metabolic health
+10. **Hepatology** - Liver health and detoxification support
+11. **Nephrology** - Kidney and urinary system health
+12. **Pulmonology** - Respiratory health and breathing support
+13. **Immunology** - Immune system strengthening
+14. **Pediatrics** - Children's health and development
+15. **Geriatrics** - Elder care and longevity solutions
+16. **Oncology** - Cancer care support and recovery
+17. **Psychiatry** - Mental wellness and stress management
+
+### Key Business Features
+- **Global Delivery**: 1-7 day shipping to 50+ countries with luxury packaging
+- **Expert Consultations**: Video calls with certified Ayurvedic practitioners
+- **Product Verification**: Certificate of authenticity from verified manufacturers
+- **Multi-Currency**: Support for local currencies and payment methods
+- **Inventory Tracking**: Real-time stock management with low-stock alerts
+- **Quality Assurance**: Rigorous testing and quality control processes
+
+### User Experience Priorities
+- **Royal Welcome**: Luxurious first impressions that build immediate trust
+- **Easy Discovery**: Intuitive navigation and powerful search functionality
+- **Compelling Purchase**: Clear pricing, availability, and purchase incentives
+- **Expert Support**: Easy access to consultations and customer service
+- **Global Accessibility**: Multi-language support and cultural sensitivity
+
+## File Structure & Organization
+```
+src/
+├── app/                    # Next.js 14 App Router
+├── components/
+│   ├── ui/                # Base UI components (Button, Input, Card)
+│   ├── layout/            # Layout components (Header, Footer, Navigation)
+│   ├── product/           # Product-specific components
+│   ├── cart/              # Shopping cart components
+│   └── forms/             # Form components with validation
+├── lib/
+│   ├── supabase.ts        # Supabase client and auth helpers
+│   ├── utils.ts           # Utility functions (cn, formatPrice, etc.)
+│   └── validations.ts     # Zod schemas for validation
+├── store/
+│   ├── cart.ts            # Shopping cart state (Zustand)
+│   └── auth.ts            # Authentication state
+├── types/
+│   ├── supabase.ts        # Database types and interfaces
+│   └── product.ts         # Product-related types
+└── hooks/                 # Custom React hooks
+```
+
+## Coding Standards & Best Practices
+
+### TypeScript Guidelines
+- Use strict TypeScript configuration with no `any` types
+- Define proper interfaces for all props and data structures
+- Use generic types for reusable components and utilities
+- Leverage discriminated unions for complex state management
+
+### Component Patterns
+```tsx
+// Always use forwardRef for components that need refs
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, ...props }, ref) => {
+    return (
+      <button
+        className={cn(buttonVariants({ variant, size }), className)}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
+```
+
+### Styling Conventions
+- Use `cn()` utility from `@/lib/utils` for conditional classes
+- Leverage design system colors: `bg-primary`, `text-royal`, `shadow-healing`
+- Mobile-first responsive design with Tailwind breakpoints
+- Consistent spacing using Tailwind's spacing scale
+
+### State Management
+- **Global State**: Use Zustand for cart, auth, and UI state
+- **Server State**: Use React Query for API calls and caching
+- **Form State**: Use React Hook Form with Zod validation
+- **Local State**: Use React hooks (useState, useReducer) for component state
+
+### API Integration
+- All database queries through Supabase client
+- Implement proper error handling and loading states
+- Use React Query for caching and background updates
+- Leverage Supabase's real-time capabilities for live updates
+
+## AI Assistant Guidelines
+
+### Code Generation Preferences
+- Write complete, production-ready components with proper TypeScript typing
+- Always include accessibility attributes (ARIA labels, proper semantics)
+- Use the royal design system colors and components consistently
+- Implement proper error handling and loading states for all async operations
+
+### Business Context Awareness
+- Remember this is a premium wellness platform targeting global customers
+- Focus on trust-building elements (certifications, authenticity, expert guidance)
+- Prioritize user experience for both novice and experienced Ayurveda users
+- Consider cultural sensitivity for global markets
+
+### Performance Considerations
+- Use Next.js Image component for all images with proper optimization
+- Implement code splitting for heavy components and pages
+- Leverage React Query for efficient data fetching and caching
+- Optimize bundle size through tree shaking and dynamic imports
+
+### Security & Privacy
+- Implement proper input validation using Zod schemas
+- Use Supabase RLS policies for database security
+- Handle user data with GDPR and CCPA compliance in mind
+- Secure API endpoints with proper authentication and authorization
+
+## Current Development Status
+- ✅ Project structure and configuration complete
+- ✅ Royal design system implemented with Tailwind CSS
+- ✅ Core UI components (Button, Input, Card) developed
+- ✅ Homepage with royal branding and luxury aesthetics
+- ✅ Database schema and types defined
+- ✅ Authentication system configured
+- ✅ Shopping cart state management implemented
+- 🔄 Product catalog and category pages in development
+- 🔄 User authentication flows and profile management
+- 🔄 Checkout process and payment integration
+- 🔄 Expert consultation booking system
+
+Focus on creating luxurious, trustworthy user experiences that guide customers through their wellness journey while maintaining the highest standards of code quality and performance. 
