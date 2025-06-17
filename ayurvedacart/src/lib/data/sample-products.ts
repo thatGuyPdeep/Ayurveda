@@ -1,0 +1,290 @@
+import type { Product } from '@/types'
+
+export const sampleProducts: Product[] = [
+  // Classical Ayurveda Products
+  {
+    id: '1',
+    sku: 'AYU-CLA-001',
+    name: 'Chyawanprash Premium - Immunity Booster',
+    slug: 'chyawanprash-premium-immunity-booster',
+    short_description: 'Traditional Ayurvedic immunity booster with 40+ herbs',
+    description: 'Our premium Chyawanprash is a time-tested Ayurvedic formulation containing over 40 precious herbs including Amla, Ashwagandha, and Giloy. This ancient recipe boosts immunity, enhances energy levels, and promotes overall wellness. Made using traditional methods passed down through generations.',
+    type: 'classical',
+    form: 'paste',
+    base_price: 899,
+    selling_price: 749,
+    discount_percentage: 17,
+    tax_rate: 12,
+    track_inventory: true,
+    stock_quantity: 150,
+    low_stock_threshold: 20,
+    ingredients: ['Amla', 'Ashwagandha', 'Giloy', 'Brahmi', 'Shankhpushpi', 'Honey', 'Ghee'],
+    indications: ['Low immunity', 'Frequent infections', 'General weakness', 'Seasonal allergies'],
+    contraindications: ['Diabetes (consult doctor)', 'High blood sugar'],
+    dosage_instructions: 'Take 1-2 teaspoons twice daily with warm milk or water',
+    pack_size: '500g',
+    is_featured: true,
+    is_prescription_required: false,
+    status: 'active',
+    average_rating: 4.8,
+    review_count: 1247,
+    constitution: ['vata', 'pitta', 'kapha'],
+    brand: {
+      id: 'brand-1',
+      name: 'Kottakkal Arya Vaidya Sala',
+      slug: 'kottakkal',
+      description: 'Authentic Ayurvedic medicines since 1902',
+      logo_url: '/brands/kottakkal-logo.jpg',
+      established_year: 1902,
+      country: 'India',
+      certifications: ['ISO 9001:2015', 'GMP Certified', 'AYUSH Approved'],
+      is_active: true,
+      created_at: new Date('2024-01-01').toISOString(),
+      updated_at: new Date('2024-01-01').toISOString()
+    },
+    created_at: new Date('2024-01-15').toISOString(),
+    updated_at: new Date('2024-01-20').toISOString()
+  },
+  {
+    id: '2',
+    sku: 'AYU-CAR-002',
+    name: 'Arjunarishta - Heart Health Tonic',
+    slug: 'arjunarishta-heart-health-tonic',
+    short_description: 'Natural heart tonic for cardiovascular wellness',
+    description: 'Arjunarishta is a classical Ayurvedic formulation specifically designed for heart health. Made with Arjuna bark and other cardio-protective herbs, it helps strengthen the heart muscle, regulate blood pressure, and improve overall cardiovascular function.',
+    type: 'cardiology',
+    form: 'liquid',
+    base_price: 650,
+    selling_price: 650,
+    discount_percentage: 0,
+    tax_rate: 12,
+    track_inventory: true,
+    stock_quantity: 89,
+    low_stock_threshold: 15,
+    ingredients: ['Arjuna bark', 'Madhuka', 'Draksha', 'Jaggery', 'Water'],
+    indications: ['High blood pressure', 'Heart palpitations', 'Chest discomfort', 'Cardiovascular weakness'],
+    contraindications: ['Severe heart conditions (consult cardiologist)', 'Pregnancy'],
+    dosage_instructions: 'Take 15-30ml twice daily after meals with equal amount of water',
+    pack_size: '450ml',
+    is_featured: true,
+    is_prescription_required: false,
+    status: 'active',
+    average_rating: 4.6,
+    review_count: 892,
+    constitution: ['pitta', 'vata'],
+    brand: {
+      id: 'brand-1',
+      name: 'Kottakkal Arya Vaidya Sala',
+      slug: 'kottakkal',
+      description: 'Authentic Ayurvedic medicines since 1902',
+      logo_url: '/brands/kottakkal-logo.jpg',
+      established_year: 1902,
+      country: 'India',
+      certifications: ['ISO 9001:2015', 'GMP Certified', 'AYUSH Approved'],
+      is_active: true,
+      created_at: new Date('2024-01-01').toISOString(),
+      updated_at: new Date('2024-01-01').toISOString()
+    },
+    created_at: new Date('2024-01-10').toISOString(),
+    updated_at: new Date('2024-01-18').toISOString()
+  },
+  {
+    id: '3',
+    sku: 'AYU-DER-003',
+    name: 'Kumkumadi Tailam - Radiant Skin Oil',
+    slug: 'kumkumadi-tailam-radiant-skin-oil',
+    short_description: 'Premium face oil for glowing and youthful skin',
+    description: 'Kumkumadi Tailam is a luxurious Ayurvedic face oil containing saffron and 16 precious herbs. This golden elixir helps reduce dark spots, fine lines, and blemishes while promoting natural skin radiance and anti-aging benefits.',
+    type: 'dermatology',
+    form: 'oil',
+    base_price: 1299,
+    selling_price: 1099,
+    discount_percentage: 15,
+    tax_rate: 18,
+    track_inventory: true,
+    stock_quantity: 67,
+    low_stock_threshold: 10,
+    ingredients: ['Saffron', 'Manjistha', 'Yashtimadhu', 'Sesame oil', 'Goat milk', 'Lotus', 'Sandalwood'],
+    indications: ['Dark spots', 'Uneven skin tone', 'Fine lines', 'Dull skin', 'Acne marks'],
+    contraindications: ['Open wounds', 'Active skin infections'],
+    dosage_instructions: 'Apply 2-3 drops on clean face at night. Gently massage and leave overnight',
+    pack_size: '12ml',
+    is_featured: true,
+    is_prescription_required: false,
+    status: 'active',
+    average_rating: 4.9,
+    review_count: 2156,
+    constitution: ['vata', 'pitta'],
+    brand: {
+      id: 'brand-2',
+      name: 'Kerala Ayurveda',
+      slug: 'kerala-ayurveda',
+      description: 'Premium Ayurvedic products from Kerala',
+      logo_url: '/brands/kerala-ayurveda-logo.jpg',
+      established_year: 1945,
+      country: 'India',
+      certifications: ['Organic Certified', 'AYUSH Licensed', 'Fair Trade'],
+      is_active: true,
+      created_at: new Date('2024-01-01').toISOString(),
+      updated_at: new Date('2024-01-01').toISOString()
+    },
+    created_at: new Date('2024-01-12').toISOString(),
+    updated_at: new Date('2024-01-22').toISOString()
+  },
+  {
+    id: '4',
+    sku: 'AYU-GYN-004',
+    name: 'Ashokarishta - Women\'s Health Tonic',
+    slug: 'ashokarishta-womens-health-tonic',
+    short_description: 'Traditional tonic for women\'s reproductive health',
+    description: 'Ashokarishta is a classical Ayurvedic formulation specifically designed for women\'s health. It helps regulate menstrual cycles, reduces menstrual discomfort, and supports overall reproductive wellness using time-tested herbs.',
+    type: 'gynecology',
+    form: 'liquid',
+    base_price: 580,
+    selling_price: 495,
+    discount_percentage: 15,
+    tax_rate: 12,
+    track_inventory: true,
+    stock_quantity: 124,
+    low_stock_threshold: 25,
+    ingredients: ['Ashoka bark', 'Dhataki', 'Musta', 'Haritaki', 'Jaggery'],
+    indications: ['Irregular periods', 'Menstrual pain', 'Heavy bleeding', 'PCOS symptoms'],
+    contraindications: ['Pregnancy', 'Breastfeeding (consult doctor)'],
+    dosage_instructions: 'Take 15-30ml twice daily after meals with equal amount of water',
+    pack_size: '450ml',
+    is_featured: true,
+    is_prescription_required: false,
+    status: 'active',
+    average_rating: 4.7,
+    review_count: 1834,
+    constitution: ['pitta', 'kapha'],
+    brand: {
+      id: 'brand-1',
+      name: 'Kottakkal Arya Vaidya Sala',
+      slug: 'kottakkal',
+      description: 'Authentic Ayurvedic medicines since 1902',
+      logo_url: '/brands/kottakkal-logo.jpg',
+      established_year: 1902,
+      country: 'India',
+      certifications: ['ISO 9001:2015', 'GMP Certified', 'AYUSH Approved'],
+      is_active: true,
+      created_at: new Date('2024-01-01').toISOString(),
+      updated_at: new Date('2024-01-01').toISOString()
+    },
+    created_at: new Date('2024-01-08').toISOString(),
+    updated_at: new Date('2024-01-25').toISOString()
+  },
+  {
+    id: '5',
+    sku: 'AYU-GAS-005',
+    name: 'Hingwashtak Churna - Digestive Powder',
+    slug: 'hingwashtak-churna-digestive-powder',
+    short_description: 'Powerful digestive aid for better gut health',
+    description: 'Hingwashtak Churna is a potent Ayurvedic digestive formula containing eight powerful herbs including Hing (Asafoetida). It helps improve digestion, reduces gas and bloating, and enhances appetite naturally.',
+    type: 'gastroenterology',
+    form: 'powder',
+    base_price: 320,
+    selling_price: 275,
+    discount_percentage: 14,
+    tax_rate: 12,
+    track_inventory: true,
+    stock_quantity: 198,
+    low_stock_threshold: 30,
+    ingredients: ['Hing', 'Sonth', 'Kala Jeera', 'Safed Jeera', 'Ajwain', 'Kala Namak', 'Pippali', 'Maricha'],
+    indications: ['Indigestion', 'Gas and bloating', 'Loss of appetite', 'Abdominal discomfort'],
+    contraindications: ['Hyperacidity', 'Ulcers'],
+    dosage_instructions: 'Take 1/4 to 1/2 teaspoon with warm water before meals',
+    pack_size: '100g',
+    is_featured: false,
+    is_prescription_required: false,
+    status: 'active',
+    average_rating: 4.5,
+    review_count: 756,
+    constitution: ['vata', 'kapha'],
+    brand: {
+      id: 'brand-2',
+      name: 'Kerala Ayurveda',
+      slug: 'kerala-ayurveda',
+      description: 'Premium Ayurvedic products from Kerala',
+      logo_url: '/brands/kerala-ayurveda-logo.jpg',
+      established_year: 1945,
+      country: 'India',
+      certifications: ['Organic Certified', 'AYUSH Licensed', 'Fair Trade'],
+      is_active: true,
+      created_at: new Date('2024-01-01').toISOString(),
+      updated_at: new Date('2024-01-01').toISOString()
+    },
+    created_at: new Date('2024-01-14').toISOString(),
+    updated_at: new Date('2024-01-21').toISOString()
+  },
+  {
+    id: '6',
+    sku: 'AYU-NEU-006',
+    name: 'Brahmi Ghrita - Memory Enhancer',
+    slug: 'brahmi-ghrita-memory-enhancer',
+    short_description: 'Medicated ghee for brain health and memory',
+    description: 'Brahmi Ghrita is a classical Ayurvedic preparation that combines the brain-boosting properties of Brahmi with pure cow ghee. It enhances memory, improves concentration, and supports overall cognitive function.',
+    type: 'neurology',
+    form: 'ghee',
+    base_price: 850,
+    selling_price: 765,
+    discount_percentage: 10,
+    tax_rate: 12,
+    track_inventory: true,
+    stock_quantity: 45,
+    low_stock_threshold: 8,
+    ingredients: ['Brahmi', 'Cow ghee', 'Mandukaparni', 'Shankhpushpi', 'Vacha'],
+    indications: ['Memory loss', 'Poor concentration', 'Mental fatigue', 'Stress'],
+    contraindications: ['High cholesterol', 'Obesity'],
+    dosage_instructions: 'Take 1/2 to 1 teaspoon twice daily with warm milk',
+    pack_size: '200g',
+    is_featured: false,
+    is_prescription_required: false,
+    status: 'active',
+    average_rating: 4.4,
+    review_count: 423,
+    constitution: ['vata', 'pitta'],
+    brand: {
+      id: 'brand-1',
+      name: 'Kottakkal Arya Vaidya Sala',
+      slug: 'kottakkal',
+      description: 'Authentic Ayurvedic medicines since 1902',
+      logo_url: '/brands/kottakkal-logo.jpg',
+      established_year: 1902,
+      country: 'India',
+      certifications: ['ISO 9001:2015', 'GMP Certified', 'AYUSH Approved'],
+      is_active: true,
+      created_at: new Date('2024-01-01').toISOString(),
+      updated_at: new Date('2024-01-01').toISOString()
+    },
+    created_at: new Date('2024-01-16').toISOString(),
+    updated_at: new Date('2024-01-23').toISOString()
+  }
+]
+
+export function getProductsByType(type: string): Product[] {
+  return sampleProducts.filter(product => product.type === type)
+}
+
+export function getFeaturedProducts(): Product[] {
+  return sampleProducts.filter(product => product.is_featured)
+}
+
+export function getProductBySlug(slug: string): Product | undefined {
+  return sampleProducts.find(product => product.slug === slug)
+}
+
+export function getProductById(id: string): Product | undefined {
+  return sampleProducts.find(product => product.id === id)
+}
+
+export function searchProducts(query: string): Product[] {
+  const lowercaseQuery = query.toLowerCase()
+  return sampleProducts.filter(product =>
+    product.name.toLowerCase().includes(lowercaseQuery) ||
+    (product.description && product.description.toLowerCase().includes(lowercaseQuery)) ||
+    (product.short_description && product.short_description.toLowerCase().includes(lowercaseQuery)) ||
+    product.ingredients.some(ingredient => ingredient.toLowerCase().includes(lowercaseQuery)) ||
+    product.indications.some(indication => indication.toLowerCase().includes(lowercaseQuery))
+  )
+} 

@@ -166,37 +166,46 @@ export default function AboutPage() {
           <h2 className="text-3xl md:text-4xl font-bold text-center text-charcoal mb-12">
             Meet Our Team
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card variant="elevated" className="p-6 text-center">
-              <div className="w-20 h-20 bg-emerald-200 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <span className="text-2xl font-bold text-emerald-800">DR</span>
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <Card variant="elevated" className="p-8 text-center">
+              <div className="w-24 h-24 bg-emerald-200 rounded-full mx-auto mb-6 flex items-center justify-center">
+                <span className="text-3xl font-bold text-emerald-800">R</span>
               </div>
-              <h3 className="text-xl font-semibold text-charcoal mb-2">Dr. Priya Sharma</h3>
+              <h3 className="text-2xl font-semibold text-charcoal mb-2">Raj</h3>
+              <p className="text-saffron-600 font-medium mb-4">Co-Founder, CEO</p>
+              <p className="text-charcoal/70 leading-relaxed">
+                Passionate entrepreneur with deep expertise in Ayurvedic wellness and business strategy. 
+                Raj leads the vision to make authentic Ayurveda accessible globally while maintaining 
+                traditional standards and quality.
+              </p>
+            </Card>
+
+            <Card variant="elevated" className="p-8 text-center">
+              <div className="w-24 h-24 bg-saffron-200 rounded-full mx-auto mb-6 flex items-center justify-center">
+                <span className="text-3xl font-bold text-saffron-800">PD</span>
+              </div>
+              <h3 className="text-2xl font-semibold text-charcoal mb-2">Prabhakar Deep</h3>
+              <p className="text-saffron-600 font-medium mb-4">Co-Founder, CTO</p>
+              <p className="text-charcoal/70 leading-relaxed">
+                Technology visionary combining software engineering expertise with passion for traditional wellness. 
+                Prabhakar leads technical innovation, ensuring seamless user experiences and robust platform architecture.
+              </p>
+            </Card>
+          </div>
+        </section>
+
+        {/* Additional Team Section */}
+        <section className="mt-16">
+          <h3 className="text-2xl font-bold text-center text-charcoal mb-8">
+            Our Expert Advisory Team
+          </h3>
+          <div className="grid md:grid-cols-3 gap-6">
+            <Card variant="elevated" className="p-6 text-center">
+              <div className="w-16 h-16 bg-emerald-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                <span className="text-xl font-bold text-emerald-800">DR</span>
+              </div>
+              <h4 className="text-lg font-semibold text-charcoal mb-2">Dr. Priya Sharma</h4>
               <p className="text-saffron-600 font-medium mb-3">Chief Ayurvedic Officer</p>
-              <p className="text-charcoal/70 text-sm">
-                BAMS, MD (Ayurveda) with 15+ years of clinical experience in traditional 
-                Ayurvedic medicine and wellness.
-              </p>
-            </Card>
-
-            <Card variant="elevated" className="p-6 text-center">
-              <div className="w-20 h-20 bg-saffron-200 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <span className="text-2xl font-bold text-saffron-800">RK</span>
-              </div>
-              <h3 className="text-xl font-semibold text-charcoal mb-2">Rajesh Kumar</h3>
-              <p className="text-saffron-600 font-medium mb-3">Founder & CEO</p>
-              <p className="text-charcoal/70 text-sm">
-                Wellness entrepreneur with a passion for making authentic Ayurveda 
-                accessible to modern lifestyles.
-              </p>
-            </Card>
-
-            <Card variant="elevated" className="p-6 text-center">
-              <div className="w-20 h-20 bg-maroon-200 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <span className="text-2xl font-bold text-maroon-800">SM</span>
-              </div>
-              <h3 className="text-xl font-semibold text-charcoal mb-2">Sneha Mehta</h3>
-              <p className="text-saffron-600 font-medium mb-3">Head of Quality Assurance</p>
               <p className="text-charcoal/70 text-sm">
                 Pharmaceutical expert ensuring every product meets the highest standards 
                 of quality and safety.

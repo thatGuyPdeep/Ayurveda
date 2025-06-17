@@ -1,33 +1,38 @@
 import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@/types'
+import { Database } from '@/types/supabase'
 
-// Use placeholder values for development if environment variables are not set
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key'
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-service-key'
+// Get environment variables with fallbacks
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 
-// Only warn in development, don't throw error
-if ((!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) && process.env.NODE_ENV === 'development') {
-  console.warn('⚠️  Supabase environment variables not configured. Using placeholder values for development.')
-  console.warn('   Please create a .env.local file with your Supabase credentials for full functionality.')
+// Validate environment variables
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn('Supabase environment variables are not properly configured')
 }
 
-// Client for browser/client-side operations
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true
-  }
-})
+// Client for browser/public operations
+export const supabase = createClient<Database>(
+  supabaseUrl || 'https://placeholder.supabase.co', 
+  supabaseAnonKey || 'placeholder-key'
+)
 
-// Admin client for server-side operations (use with caution)
-export const supabaseAdmin = createClient<Database>(supabaseUrl, supabaseServiceKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false
+// Admin client for server-side operations (use carefully)
+export const supabaseAdmin = createClient<Database>(
+  supabaseUrl || 'https://placeholder.supabase.co', 
+  supabaseServiceKey || 'placeholder-key', 
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
   }
-})
+)
+
+// Helper function to check if Supabase is properly configured
+export function isSupabaseConfigured() {
+  return !!(supabaseUrl && supabaseAnonKey && supabaseUrl !== 'https://placeholder.supabase.co')
+}
 
 // Helper function to handle Supabase errors
 export function handleSupabaseError(error: any) {
@@ -74,16 +79,25 @@ export const orderQueries = {
 
 // Helper functions for common operations
 export const getUser = async () => {
+  if (!isSupabaseConfigured()) {
+    return { user: null, error: new Error('Supabase not configured') }
+  }
   const { data: { user }, error } = await supabase.auth.getUser()
   return { user, error }
 }
 
 export const signOut = async () => {
+  if (!isSupabaseConfigured()) {
+    return { error: null }
+  }
   const { error } = await supabase.auth.signOut()
   return { error }
 }
 
 export const signInWithEmail = async (email: string, password: string) => {
+  if (!isSupabaseConfigured()) {
+    return { data: null, error: new Error('Supabase not configured') }
+  }
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -92,6 +106,9 @@ export const signInWithEmail = async (email: string, password: string) => {
 }
 
 export const signUpWithEmail = async (email: string, password: string, metadata?: any) => {
+  if (!isSupabaseConfigured()) {
+    return { data: null, error: new Error('Supabase not configured') }
+  }
   const { data, error } = await supabase.auth.signUp({
     email,
     password,

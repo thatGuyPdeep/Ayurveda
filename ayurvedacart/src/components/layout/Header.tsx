@@ -3,17 +3,18 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Search, ShoppingCart, User, Menu, X, Heart, Phone, Mail } from 'lucide-react'
+import { Search, ShoppingCart, User, Menu, X, Heart, Phone, Mail, Crown, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Badge } from '@/components/ui/Badge'
-import { useCart, useCartItemCount } from '@/store/cart'
-import { useAuth, useUser } from '@/store/auth'
+import { useCart } from '@/contexts/CartContext'
+import { useAuth } from '@/contexts/AuthContext'
 import { cn } from '@/lib/utils'
 
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Products', href: '/products' },
+  { name: 'Specialties', href: '/specialties' },
   { name: 'Categories', href: '/categories' },
   { name: 'Consultation', href: '/consultation' },
   { name: 'About', href: '/about' },
@@ -25,11 +26,11 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
   const [searchQuery, setSearchQuery] = React.useState('')
   const [isSearchOpen, setIsSearchOpen] = React.useState(false)
+  const [showUserMenu, setShowUserMenu] = React.useState(false)
   
-  const { openCart } = useCart()
-  const cartItemCount = useCartItemCount()
-  const user = useUser()
-  const { signOut } = useAuth()
+  const { toggleCart, getTotalItems } = useCart()
+  const { user, signOut, loading } = useAuth()
+  const cartItemCount = getTotalItems()
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -41,12 +42,9 @@ export function Header() {
   }
 
   const handleSignOut = async () => {
-    try {
-      await signOut()
-      router.push('/')
-    } catch (error) {
-      console.error('Error signing out:', error)
-    }
+    await signOut()
+    setShowUserMenu(false)
+    router.push('/')
   }
 
   return (
@@ -78,17 +76,17 @@ export function Header() {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">A</span>
+          <Link href="/" className="flex items-center space-x-3">
+            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 flex items-center justify-center shadow-lg">
+              <Crown className="h-6 w-6 text-white" />
             </div>
             <span className="font-bold text-xl text-charcoal">
-              Ayurveda<span className="text-emerald-800">Cart</span>
+              AyuraVeda<span className="text-emerald-800"> Royale</span>
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-8 ml-12">
             {navigation.map((item) => (
               <Link
                 key={item.name}
@@ -138,7 +136,7 @@ export function Header() {
               variant="ghost"
               size="icon"
               className="relative"
-              onClick={openCart}
+              onClick={toggleCart}
             >
               <ShoppingCart className="h-5 w-5" />
               {cartItemCount > 0 && (
@@ -151,59 +149,68 @@ export function Header() {
               )}
             </Button>
 
-            {/* User Menu */}
-            {user ? (
-              <div className="relative group">
-                <Button variant="ghost" size="icon">
+            {/* User Menu - Updated with proper authentication */}
+            {loading ? (
+              <div className="w-20 h-8 bg-sage-light rounded animate-pulse"></div>
+            ) : user ? (
+              <div className="relative">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="relative"
+                >
                   <User className="h-5 w-5" />
                 </Button>
                 
-                {/* Dropdown Menu */}
-                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-lg border border-sage-light opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                  <div className="p-3 border-b border-sage-light">
-                    <p className="font-medium text-charcoal">
-                      {user.user_metadata?.first_name || user.email}
-                    </p>
-                    <p className="text-sm text-charcoal/60">{user.email}</p>
-                  </div>
-                  <div className="py-2">
+                {showUserMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-sage-light py-2 z-50">
                     <Link
-                      href="/profile"
-                      className="block px-4 py-2 text-sm text-charcoal hover:bg-sage-light transition-colors"
+                      href="/account"
+                      className="block px-4 py-2 text-sm text-charcoal hover:bg-sage-light/50 transition-colors"
+                      onClick={() => setShowUserMenu(false)}
                     >
-                      My Profile
+                      My Account
                     </Link>
                     <Link
-                      href="/orders"
-                      className="block px-4 py-2 text-sm text-charcoal hover:bg-sage-light transition-colors"
+                      href="/account/orders"
+                      className="block px-4 py-2 text-sm text-charcoal hover:bg-sage-light/50 transition-colors"
+                      onClick={() => setShowUserMenu(false)}
                     >
                       My Orders
                     </Link>
                     <Link
-                      href="/consultations"
-                      className="block px-4 py-2 text-sm text-charcoal hover:bg-sage-light transition-colors"
+                      href="/wishlist"
+                      className="block px-4 py-2 text-sm text-charcoal hover:bg-sage-light/50 transition-colors"
+                      onClick={() => setShowUserMenu(false)}
                     >
-                      My Consultations
+                      Wishlist
                     </Link>
+                    <hr className="my-2 border-sage-light" />
                     <button
                       onClick={handleSignOut}
-                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-sage-light transition-colors"
+                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
                     >
+                      <LogOut className="h-4 w-4 inline mr-2" />
                       Sign Out
                     </button>
                   </div>
-                </div>
+                )}
               </div>
-                         ) : (
-               <div className="flex items-center space-x-2">
-                 <Link href="/auth/login">
-                   <Button variant="ghost" size="sm">Sign In</Button>
-                 </Link>
-                 <Link href="/auth/register">
-                   <Button size="sm">Sign Up</Button>
-                 </Link>
-               </div>
-             )}
+            ) : (
+              <div className="flex items-center space-x-2">
+                <Link href="/auth/login">
+                  <Button variant="outline" size="sm" className="border-emerald-800 text-emerald-800 hover:bg-emerald-800 hover:text-white">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link href="/auth/register">
+                  <Button size="sm" className="bg-emerald-800 hover:bg-emerald-700 text-white">
+                    Sign Up
+                  </Button>
+                </Link>
+              </div>
+            )}
 
             {/* Mobile Menu Toggle */}
             <Button
@@ -247,6 +254,22 @@ export function Header() {
                   {item.name}
                 </Link>
               ))}
+              
+              {/* Mobile Auth Actions */}
+              {!user && (
+                <div className="pt-4 space-y-2">
+                  <Link href="/auth/login" onClick={() => setIsMenuOpen(false)}>
+                    <Button variant="outline" className="w-full border-emerald-800 text-emerald-800 hover:bg-emerald-800 hover:text-white">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link href="/auth/register" onClick={() => setIsMenuOpen(false)}>
+                    <Button className="w-full bg-emerald-800 hover:bg-emerald-700 text-white">
+                      Sign Up
+                    </Button>
+                  </Link>
+                </div>
+              )}
             </nav>
           </div>
         )}

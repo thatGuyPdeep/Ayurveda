@@ -1,0 +1,15 @@
+OPTHALMOLOGY
+
+EYE DROP
+
+| PRODUCT | COMPANY | UNIT SIZE | EXTRA REMARKS |
+| --- | --- | --- | --- |
+| I GUARD | 10 ML | DHANWANTRI |     |
+| OPTHA CARE | 10 ML | HIMALAYA |     |
+
+EYE SUPPLEMENT
+
+| PRODUCT | COMPANY | UNIT SIZE | EXTRA REMARKS |
+| --- | --- | --- | --- |
+| EYE PROTEC | SURYA | 60 CAP |     |
+| NETRAMRIT | PRAVEK | 30 CAP |     |

@@ -1,467 +1,323 @@
 'use client'
 
-import * as React from 'react'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { Search, Filter, Grid, List, SlidersHorizontal, X } from 'lucide-react'
+import { Search, Filter, Grid, List, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { Badge } from '@/components/ui/Badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
-import { ProductCard } from '@/components/product/ProductCard'
-import type { Product } from '@/types'
+import { ProductCard } from '@/components/ui/ProductCard'
+import { LoadingSkeleton } from '@/components/ui/LoadingSkeleton'
+import { useProducts } from '@/lib/hooks/useProducts'
+import type { ProductFilters } from '@/lib/services/product'
 
-// Mock data - replace with actual API calls
-const mockProducts: Product[] = [
-  {
-    id: '1',
-    sku: 'AYU-001',
-    name: 'Ashwagandha Premium Capsules',
-    slug: 'ashwagandha-premium-capsules',
-    short_description: 'Natural stress relief and energy booster',
-    description: 'Premium quality Ashwagandha capsules for stress management and vitality enhancement.',
-    type: 'supplement',
-    form: 'capsule',
-    base_price: 2499,
-    selling_price: 1999,
-    tax_rate: 8,
-    track_inventory: true,
-    stock_quantity: 150,
-    low_stock_threshold: 20,
-    ingredients: ['Ashwagandha Root Extract', 'Organic Turmeric', 'Black Pepper Extract'],
-    indications: ['Stress Management', 'Energy Enhancement', 'Immune Support'],
-    contraindications: ['Pregnancy', 'Nursing', 'Autoimmune Conditions'],
-    dosage_instructions: 'Take 1-2 capsules daily with meals',
-    constitution: ['vata', 'pitta'],
-    status: 'active',
-    is_featured: true,
-    is_prescription_required: false,
-    images: [{
-      id: '1',
-      product_id: '1',
-      image_url: '/products/ashwagandha-capsules.jpg',
-      alt_text: 'Ashwagandha Premium Capsules',
-      sort_order: 1,
-      is_primary: true,
-      created_at: '2024-01-01T00:00:00Z'
-    }],
-    average_rating: 4.5,
-    review_count: 128,
-    brand: {
-      id: 'brand-1',
-      name: 'AyurVeda Premium',
-      slug: 'ayurveda-premium',
-      logo_url: '/brands/ayurveda-premium.jpg',
-      description: 'Premium Ayurvedic products',
-      is_active: true,
-      created_at: '2024-01-01T00:00:00Z',
-      updated_at: '2024-01-01T00:00:00Z'
-    },
-    created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-15T00:00:00Z'
-  },
-  {
-    id: '2',
-    sku: 'AYU-002',
-    name: 'Triphala Digestive Support',
-    slug: 'triphala-digestive-support',
-    short_description: 'Traditional digestive wellness formula',
-    description: 'Ancient Ayurvedic blend of three fruits for digestive health and detoxification.',
-    type: 'medicine',
-    form: 'powder',
-    base_price: 1599,
-    selling_price: 1599,
-    tax_rate: 8,
-    track_inventory: true,
-    stock_quantity: 89,
-    low_stock_threshold: 15,
-    ingredients: ['Amalaki', 'Bibhitaki', 'Haritaki'],
-    indications: ['Digestive Health', 'Detoxification', 'Bowel Regularity'],
-    contraindications: ['Severe Diarrhea', 'Pregnancy'],
-    dosage_instructions: 'Mix 1 tsp with warm water before bedtime',
-    constitution: ['pitta', 'kapha'],
-    status: 'active',
-    is_featured: false,
-    is_prescription_required: false,
-    images: [{
-      id: '2',
-      product_id: '2',
-      image_url: '/products/triphala-powder.jpg',
-      alt_text: 'Triphala Digestive Support Powder',
-      sort_order: 1,
-      is_primary: true,
-      created_at: '2024-01-01T00:00:00Z'
-    }],
-    average_rating: 4.2,
-    review_count: 67,
-    brand: {
-      id: 'brand-2',
-      name: 'Traditional Herbs',
-      slug: 'traditional-herbs',
-      logo_url: '/brands/traditional-herbs.jpg',
-      description: 'Traditional herbal medicines',
-      is_active: true,
-      created_at: '2024-01-01T00:00:00Z',
-      updated_at: '2024-01-01T00:00:00Z'
-    },
-    created_at: '2024-01-10T00:00:00Z',
-    updated_at: '2024-01-15T00:00:00Z'
-  }
-]
+interface LocalFilters {
+  search: string
+  category: string
+  minPrice: string
+  maxPrice: string
+  sortBy: string
+  inStock: boolean
+  featured: boolean
+}
 
-const categories = [
-  { id: 'supplements', name: 'Health Supplements', count: 45 },
-  { id: 'medicines', name: 'Classical Medicines', count: 67 },
-  { id: 'oils', name: 'Herbal Oils', count: 23 },
-  { id: 'powders', name: 'Herbal Powders', count: 34 },
-  { id: 'teas', name: 'Herbal Teas', count: 18 }
-]
-
-const constitutions = [
-  { value: 'vata', label: 'Vata', count: 120 },
-  { value: 'pitta', label: 'Pitta', count: 98 },
-  { value: 'kapha', label: 'Kapha', count: 87 }
-]
-
-const priceRanges = [
-  { label: 'Under ₹1,000', min: 0, max: 1000, count: 45 },
-  { label: '₹1,000 - ₹2,500', min: 1000, max: 2500, count: 78 },
-  { label: '₹2,500 - ₹5,000', min: 2500, max: 5000, count: 34 },
-  { label: 'Over ₹5,000', min: 5000, max: 100000, count: 23 }
-]
-
-export function ProductsClient() {
+export default function ProductsClient() {
   const searchParams = useSearchParams()
-  const initialQuery = searchParams.get('q') || ''
-  
-  const [searchQuery, setSearchQuery] = useState(initialQuery)
-  const [selectedCategory, setSelectedCategory] = useState('')
-  const [selectedConstitution, setSelectedConstitution] = useState('')
-  const [selectedPriceRange, setSelectedPriceRange] = useState<{ min: number; max: number } | null>(null)
-  const [sortBy, setSortBy] = useState<'name' | 'price_low' | 'price_high' | 'newest' | 'rating'>('name')
+  const [localFilters, setLocalFilters] = useState<LocalFilters>({
+    search: '',
+    category: '',
+    minPrice: '',
+    maxPrice: '',
+    sortBy: 'name',
+    inStock: false,
+    featured: false
+  })
+
+  // Handle URL parameters for specialty filtering
+  useEffect(() => {
+    const specialty = searchParams.get('specialty')
+    if (specialty) {
+      setLocalFilters(prev => ({
+        ...prev,
+        category: specialty
+      }))
+    }
+  }, [searchParams])
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [showFilters, setShowFilters] = useState(false)
 
-  // Filter and sort products
-  const filteredProducts = useMemo(() => {
-    let filtered = mockProducts.filter(product => {
-      // Search filter
-      if (searchQuery && !product.name.toLowerCase().includes(searchQuery.toLowerCase())) {
-        return false
-      }
+  // Convert local filters to API filters
+  const apiFilters = useMemo<ProductFilters>(() => {
+    const filters: ProductFilters = {
+      sortBy: localFilters.sortBy as any,
+      inStock: localFilters.inStock,
+      featured: localFilters.featured,
+      limit: 20
+    }
 
-      // Category filter
-      if (selectedCategory && product.type !== selectedCategory) {
-        return false
-      }
+    if (localFilters.search.trim()) {
+      filters.search = localFilters.search.trim()
+    }
 
-      // Constitution filter
-      if (selectedConstitution && !product.constitution?.includes(selectedConstitution as any)) {
-        return false
-      }
+    if (localFilters.category) {
+      filters.category = localFilters.category
+    }
 
-      // Price range filter
-      if (selectedPriceRange) {
-        if (product.selling_price < selectedPriceRange.min || product.selling_price > selectedPriceRange.max) {
-          return false
-        }
+    if (localFilters.minPrice || localFilters.maxPrice) {
+      filters.priceRange = {
+        min: localFilters.minPrice ? parseInt(localFilters.minPrice) : 0,
+        max: localFilters.maxPrice ? parseInt(localFilters.maxPrice) : 10000
       }
+    }
 
-      return true
+    return filters
+  }, [localFilters])
+
+  // Use React Query to fetch products
+  const { data: productData, isLoading, error } = useProducts(apiFilters)
+  const products = productData?.products || []
+
+  const handleFilterChange = (key: keyof LocalFilters, value: string | boolean) => {
+    setLocalFilters(prev => ({
+      ...prev,
+      [key]: value
+    }))
+  }
+
+  const clearFilters = () => {
+    setLocalFilters({
+      search: '',
+      category: '',
+      minPrice: '',
+      maxPrice: '',
+      sortBy: 'name',
+      inStock: false,
+      featured: false
     })
+  }
 
-    // Sort products
-    filtered.sort((a, b) => {
-      switch (sortBy) {
-        case 'price_low':
-          return a.selling_price - b.selling_price
-        case 'price_high':
-          return b.selling_price - a.selling_price
-        case 'newest':
-          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        case 'rating':
-          return (b.average_rating || 0) - (a.average_rating || 0)
-        case 'name':
-        default:
-          return a.name.localeCompare(b.name)
-      }
-    })
-
-    return filtered
-  }, [searchQuery, selectedCategory, selectedConstitution, selectedPriceRange, sortBy])
-
-  const clearAllFilters = () => {
-    setSearchQuery('')
-    setSelectedCategory('')
-    setSelectedConstitution('')
-    setSelectedPriceRange(null)
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center py-16">
+          <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Search className="h-12 w-12 text-red-400" />
+          </div>
+          <h3 className="text-xl font-semibold text-charcoal mb-2">Error loading products</h3>
+          <p className="text-charcoal/70 mb-4">
+            There was an issue loading the products. Please try again.
+          </p>
+          <Button onClick={() => window.location.reload()} variant="outline">
+            Retry
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   return (
-    <>
-      {/* Page Header */}
-      <section className="bg-gradient-to-br from-emerald-800 to-emerald-600 text-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Ayurvedic Products
-            </h1>
-            <p className="text-xl text-white/90 max-w-2xl mx-auto">
-              Discover our comprehensive collection of authentic Ayurvedic medicines, 
-              supplements, and wellness products.
-            </p>
-          </div>
+    <div className="container mx-auto px-4 py-8">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
+        <div>
+          <h1 className="text-3xl font-bold text-charcoal mb-2 font-display">
+            AyuraVeda Royale Products
+          </h1>
+          <p className="text-charcoal/70">
+            {isLoading ? 'Loading products...' : `${products.length} authentic Ayurvedic products`}
+          </p>
         </div>
-      </section>
-
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Filters Sidebar */}
-          <aside className={`lg:w-80 ${showFilters ? 'block' : 'hidden lg:block'}`}>
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span>Filters</span>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={clearAllFilters}
-                  >
-                    Clear All
-                  </Button>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Search */}
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Search Products</label>
-                  <Input
-                    placeholder="Search products..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    icon={<Search className="h-4 w-4" />}
-                  />
-                </div>
-
-                {/* Categories */}
-                <div>
-                  <label className="text-sm font-medium mb-3 block">Categories</label>
-                  <div className="space-y-2">
-                    <button
-                      onClick={() => setSelectedCategory('')}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                        selectedCategory === '' 
-                          ? 'bg-emerald-800 text-white' 
-                          : 'hover:bg-sage-light'
-                      }`}
-                    >
-                      All Categories
-                    </button>
-                    {categories.map((category) => (
-                      <button
-                        key={category.id}
-                        onClick={() => setSelectedCategory(category.id)}
-                        className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex justify-between ${
-                          selectedCategory === category.id 
-                            ? 'bg-emerald-800 text-white' 
-                            : 'hover:bg-sage-light'
-                        }`}
-                      >
-                        <span>{category.name}</span>
-                        <span className="text-xs opacity-70">({category.count})</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Constitution */}
-                <div>
-                  <label className="text-sm font-medium mb-3 block">Ayurvedic Constitution</label>
-                  <div className="space-y-2">
-                    <button
-                      onClick={() => setSelectedConstitution('')}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                        selectedConstitution === '' 
-                          ? 'bg-emerald-800 text-white' 
-                          : 'hover:bg-sage-light'
-                      }`}
-                    >
-                      All Constitutions
-                    </button>
-                    {constitutions.map((constitution) => (
-                      <button
-                        key={constitution.value}
-                        onClick={() => setSelectedConstitution(constitution.value)}
-                        className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex justify-between ${
-                          selectedConstitution === constitution.value 
-                            ? 'bg-emerald-800 text-white' 
-                            : 'hover:bg-sage-light'
-                        }`}
-                      >
-                        <span>{constitution.label}</span>
-                        <span className="text-xs opacity-70">({constitution.count})</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Price Range */}
-                <div>
-                  <label className="text-sm font-medium mb-3 block">Price Range</label>
-                  <div className="space-y-2">
-                    <button
-                      onClick={() => setSelectedPriceRange(null)}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                        selectedPriceRange === null 
-                          ? 'bg-emerald-800 text-white' 
-                          : 'hover:bg-sage-light'
-                      }`}
-                    >
-                      All Prices
-                    </button>
-                    {priceRanges.map((range) => (
-                      <button
-                        key={range.label}
-                        onClick={() => setSelectedPriceRange({ min: range.min, max: range.max })}
-                        className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex justify-between ${
-                          selectedPriceRange?.min === range.min && selectedPriceRange?.max === range.max
-                            ? 'bg-emerald-800 text-white' 
-                            : 'hover:bg-sage-light'
-                        }`}
-                      >
-                        <span>{range.label}</span>
-                        <span className="text-xs opacity-70">({range.count})</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </aside>
-
-          {/* Main Content */}
-          <main className="flex-1">
-            {/* Toolbar */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-              <div className="flex items-center gap-4">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowFilters(!showFilters)}
-                  className="lg:hidden"
-                >
-                  <SlidersHorizontal className="mr-2 h-4 w-4" />
-                  Filters
-                </Button>
-                <p className="text-charcoal/60">
-                  Showing {filteredProducts.length} of {mockProducts.length} products
-                </p>
-              </div>
-
-              <div className="flex items-center gap-4">
-                {/* Sort */}
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as any)}
-                  className="px-3 py-2 border border-sage-light rounded-lg bg-ivory text-charcoal text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                >
-                  <option value="name">Sort by Name</option>
-                  <option value="price_low">Price: Low to High</option>
-                  <option value="price_high">Price: High to Low</option>
-                  <option value="newest">Newest First</option>
-                  <option value="rating">Highest Rated</option>
-                </select>
-
-                {/* View Mode */}
-                <div className="flex border border-sage-light rounded-lg">
-                  <Button
-                    variant={viewMode === 'grid' ? 'default' : 'ghost'}
-                    size="sm"
-                    onClick={() => setViewMode('grid')}
-                    className="rounded-r-none"
-                  >
-                    <Grid className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant={viewMode === 'list' ? 'default' : 'ghost'}
-                    size="sm"
-                    onClick={() => setViewMode('list')}
-                    className="rounded-l-none"
-                  >
-                    <List className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            {/* Active Filters */}
-            {(searchQuery || selectedCategory || selectedConstitution || selectedPriceRange) && (
-              <div className="flex flex-wrap gap-2 mb-6">
-                {searchQuery && (
-                  <Badge variant="secondary" className="flex items-center gap-1">
-                    Search: {searchQuery}
-                    <button onClick={() => setSearchQuery('')}>
-                      <X className="h-3 w-3" />
-                    </button>
-                  </Badge>
-                )}
-                {selectedCategory && (
-                  <Badge variant="secondary" className="flex items-center gap-1">
-                    Category: {categories.find(c => c.id === selectedCategory)?.name}
-                    <button onClick={() => setSelectedCategory('')}>
-                      <X className="h-3 w-3" />
-                    </button>
-                  </Badge>
-                )}
-                {selectedConstitution && (
-                  <Badge variant="secondary" className="flex items-center gap-1">
-                    Constitution: {constitutions.find(c => c.value === selectedConstitution)?.label}
-                    <button onClick={() => setSelectedConstitution('')}>
-                      <X className="h-3 w-3" />
-                    </button>
-                  </Badge>
-                )}
-                {selectedPriceRange && (
-                  <Badge variant="secondary" className="flex items-center gap-1">
-                    Price: {priceRanges.find(r => r.min === selectedPriceRange.min && r.max === selectedPriceRange.max)?.label}
-                    <button onClick={() => setSelectedPriceRange(null)}>
-                      <X className="h-3 w-3" />
-                    </button>
-                  </Badge>
-                )}
-              </div>
-            )}
-
-            {/* Products Grid */}
-            {filteredProducts.length > 0 ? (
-              <div className={`grid gap-6 ${
-                viewMode === 'grid' 
-                  ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' 
-                  : 'grid-cols-1'
-              }`}>
-                {filteredProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    showQuickView={true}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-16">
-                <div className="text-6xl mb-4">🔍</div>
-                <h3 className="text-xl font-semibold mb-2 text-charcoal">No products found</h3>
-                <p className="text-charcoal/60 mb-6">
-                  Try adjusting your filters or search terms
-                </p>
-                <Button onClick={clearAllFilters}>
-                  Clear All Filters
-                </Button>
-              </div>
-            )}
-          </main>
+        
+        <div className="flex items-center space-x-2 mt-4 md:mt-0">
+          <Button
+            variant={viewMode === 'grid' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setViewMode('grid')}
+          >
+            <Grid className="h-4 w-4" />
+          </Button>
+          <Button
+            variant={viewMode === 'list' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setViewMode('list')}
+          >
+            <List className="h-4 w-4" />
+          </Button>
         </div>
       </div>
-    </>
+
+      {/* Search and Filter Bar */}
+      <div className="bg-white rounded-xl border border-sage-light shadow-sm p-6 mb-8">
+        <div className="flex flex-col lg:flex-row gap-4">
+          {/* Search */}
+          <div className="flex-1">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-charcoal/40 h-4 w-4" />
+              <Input
+                type="text"
+                placeholder="Search products, ingredients, conditions..."
+                value={localFilters.search}
+                onChange={(e) => handleFilterChange('search', e.target.value)}
+                className="pl-10"
+              />
+            </div>
+          </div>
+
+          {/* Quick Filters */}
+          <div className="flex flex-wrap gap-2">
+            <select
+              value={localFilters.category}
+              onChange={(e) => handleFilterChange('category', e.target.value)}
+              className="px-3 py-2 border border-sage-dark rounded-md text-sm bg-white text-charcoal"
+            >
+              <option value="">All Specialties</option>
+              <option value="andrology">Andrology</option>
+              <option value="cardiology">Cardiology</option>
+              <option value="classical">Classical Ayurveda</option>
+              <option value="dental">Dental Care</option>
+              <option value="dermatology">Dermatology</option>
+              <option value="endocrinology">Endocrinology</option>
+              <option value="gastroenterology">Gastroenterology</option>
+              <option value="general-medicine">General Medicine</option>
+              <option value="gynecology">Gynecology</option>
+              <option value="hepatology">Hepatology</option>
+              <option value="nephrology">Nephrology</option>
+              <option value="neurology">Neurology</option>
+              <option value="ophthalmology">Ophthalmology</option>
+              <option value="orthopedics">Orthopedics</option>
+              <option value="pediatrics">Pediatrics</option>
+              <option value="pulmonology">Pulmonology</option>
+              <option value="trichology">Trichology</option>
+            </select>
+
+            <select
+              value={localFilters.sortBy}
+              onChange={(e) => handleFilterChange('sortBy', e.target.value)}
+              className="px-3 py-2 border border-sage-dark rounded-md text-sm bg-white text-charcoal"
+            >
+              <option value="name">Name (A-Z)</option>
+              <option value="price_low">Price: Low to High</option>
+              <option value="price_high">Price: High to Low</option>
+              <option value="newest">Newest First</option>
+              <option value="rating">Highest Rated</option>
+              <option value="featured">Featured</option>
+            </select>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <Filter className="h-4 w-4 mr-2" />
+              Filters
+            </Button>
+
+            {(localFilters.search || localFilters.category || localFilters.minPrice || localFilters.maxPrice || localFilters.inStock || localFilters.featured) && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={clearFilters}
+                className="text-emerald-800"
+              >
+                Clear All
+              </Button>
+            )}
+          </div>
+        </div>
+
+        {/* Advanced Filters */}
+        {showFilters && (
+          <div className="mt-4 pt-4 border-t border-sage-light">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2 text-charcoal">Price Range</label>
+                <div className="flex space-x-2">
+                  <Input
+                    type="number"
+                    placeholder="Min ₹"
+                    value={localFilters.minPrice}
+                    onChange={(e) => handleFilterChange('minPrice', e.target.value)}
+                    className="text-sm"
+                  />
+                  <Input
+                    type="number"
+                    placeholder="Max ₹"
+                    value={localFilters.maxPrice}
+                    onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
+                    className="text-sm"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2 text-charcoal">Availability</label>
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={localFilters.inStock}
+                    onChange={(e) => handleFilterChange('inStock', e.target.checked)}
+                    className="mr-2 h-4 w-4 text-emerald-800 focus:ring-emerald-800 border-sage-dark rounded"
+                  />
+                  <span className="text-sm text-charcoal">In Stock Only</span>
+                </label>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2 text-charcoal">Special</label>
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={localFilters.featured}
+                    onChange={(e) => handleFilterChange('featured', e.target.checked)}
+                    className="mr-2 h-4 w-4 text-emerald-800 focus:ring-emerald-800 border-sage-dark rounded"
+                  />
+                  <span className="text-sm text-charcoal">Featured Products</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Products Display */}
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {[...Array(12)].map((_, i) => (
+            <LoadingSkeleton key={i} className="h-96" />
+          ))}
+        </div>
+      ) : products.length > 0 ? (
+        <div className={viewMode === 'grid' 
+          ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          : "space-y-4"
+        }>
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} viewMode={viewMode} />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-16">
+          <div className="w-24 h-24 bg-sage-light rounded-full flex items-center justify-center mx-auto mb-4">
+            <Search className="h-12 w-12 text-charcoal/40" />
+          </div>
+          <h3 className="text-xl font-semibold text-charcoal mb-2">No products found</h3>
+          <p className="text-charcoal/70 mb-4">
+            Try adjusting your search or filter criteria
+          </p>
+          <Button onClick={clearFilters} variant="outline">
+            Clear All Filters
+          </Button>
+        </div>
+      )}
+
+      {/* Load More Button */}
+      {!isLoading && products.length > 0 && productData?.hasMore && (
+        <div className="text-center mt-12">
+          <Button size="lg" variant="outline">
+            <Loader2 className="h-4 w-4 mr-2" />
+            Load More Products
+          </Button>
+        </div>
+      )}
+    </div>
   )
 } 

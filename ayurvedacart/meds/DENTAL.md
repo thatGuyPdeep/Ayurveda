@@ -1,0 +1,44 @@
+DENTAL
+
+MOUTH ULCERS
+
+| PRODUCT | COMPANY | UNIT SIZE | EXTRA REMARKS |
+| --- | --- | --- | --- |
+| MUAMA CURE | AGROW | 10 GM |     |
+| HIORA SG | HIMALAYA | 10 GM |     |
+
+GINGIVITIS
+
+| PRODUCT | COMPANY | UNIT SIZE | EXTRA REMARKS |
+| --- | --- | --- | --- |
+| G 32 | ALARSIN | 100 TAB | MUCOSAL LESIONS |
+| FORGUM PASTE | AYURCHEM | 100 GM |     |
+| FORGUM POWDER | AYURCHEM | 50 GM |     |
+| GUM TONE PASTE | CHARAK | 50 GM |     |
+| GUM TONE POWDER | CHARAK | 40 GM |     |
+| DENTOLINA | JUPITER | 8 ML |     |
+| GLYCOSEPTOL | JUPITER | 15 ML |     |
+| HIORA PASTE | HIMALAYA | 50 GM |     |
+| HIORA MOUTH WASH | HIMALAYA | 100 ML |     |
+| HIORA GA | HIMALAYA | 15 ML |     |
+|     |     |     |     |
+
+SENSITIVITY
+
+| PRODUCT | COMPANY | UNIT SIZE | EXTRA REMARKS |
+| --- | --- | --- | --- |
+| HIORA K PASTE | HIMALAYA | 50 GM |     |
+| HIORA K MOUTH WASH | HIMALAYA | 100 ML |     |
+
+SORE THROAT
+
+| PRODUCT | COMPANY | UNIT SIZE | EXTRA REMARKS |
+| --- | --- | --- | --- |
+| KOFOL GARGLE | CHARAK | 100 ML |     |
+| ORO T | HIMALAYA | 100 ML | ORAL MUCOCITIS |
+
+TOOTH PAIN
+
+| PRODUCT | COMPANY | UNIT SIZE | EXTRA REMARKS |
+| --- | --- | --- | --- |
+| LAVANG OIL | DABUR | 2 ML |     |

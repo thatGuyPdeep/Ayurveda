@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Suspense } from 'react'
 import { Metadata } from 'next'
-import { ProductsClient } from './ProductsClient'
+import ProductsClient from './ProductsClient'
 
 export const metadata: Metadata = {
   title: 'Premium Ayurvedic Products | AyuraVeda Royale',

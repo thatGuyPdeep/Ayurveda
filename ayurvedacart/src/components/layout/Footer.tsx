@@ -36,7 +36,7 @@ export function Footer() {
                 required
                 className="flex-1 bg-ivory/10 border-ivory/20 text-ivory placeholder:text-ivory/60"
               />
-              <Button type="submit" variant="default">
+              <Button type="submit" variant="secondary">
                 Subscribe
               </Button>
             </form>
@@ -187,7 +187,7 @@ export function Footer() {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-ivory/60">
-              © 2024 AyuraVeda Royale. All rights reserved.
+              © 2025 AyuraVeda Royale. All rights reserved.
             </div>
             <div className="flex flex-wrap items-center gap-6 text-sm">
               <Link href="/terms" className="text-ivory/60 hover:text-emerald-400 transition-colors">

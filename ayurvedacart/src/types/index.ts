@@ -89,36 +89,44 @@ export interface Product {
   short_description?: string
   description?: string
   brand_id?: string
-  type: string
+  type?: string
   form?: string
   base_price: number
   selling_price: number
-  discount_percentage: number
-  tax_rate: number
+  discount_percentage?: number
+  tax_rate?: number
   weight?: number
   dimensions?: Record<string, any>
-  track_inventory: boolean
+  track_inventory?: boolean
   stock_quantity: number
-  low_stock_threshold: number
+  low_stock_threshold?: number
   dosage_form?: string
   pack_size?: string
   ingredients: string[]
   indications: string[]
   contraindications: string[]
   dosage_instructions?: string
+  constitution?: ('vata' | 'pitta' | 'kapha')[]
   meta_title?: string
   meta_description?: string
   search_keywords?: string
   status: 'draft' | 'active' | 'inactive' | 'discontinued'
   is_featured: boolean
-  is_prescription_required: boolean
+  is_prescription_required?: boolean
   average_rating?: number
   review_count?: number
   created_at: string
   updated_at: string
   
+  // Additional properties for legacy format compatibility
+  category?: string
+  subcategory?: string
+  unit_size?: string
+  tags?: string[]
+  dosage?: string
+  
   // Relations
-  brand?: Brand
+  brand?: string | Brand
   categories?: Category[]
   images?: ProductImage[]
   variants?: ProductVariant[]
@@ -162,12 +170,13 @@ export interface Category {
 
 export interface ProductImage {
   id: string
-  product_id: string
+  product_id?: string
   image_url: string
   alt_text?: string
-  sort_order: number
+  sort_order?: number
   is_primary: boolean
-  created_at: string
+  created_at?: string
+  track_inventory?: boolean
 }
 
 export interface ProductVariant {
@@ -373,7 +382,7 @@ export interface PaginatedResponse<T> {
 }
 
 export interface ProductFilters {
-  categoryId?: string
+  category?: string
   brandIds?: string[]
   priceRange?: { min: number; max: number }
   sortBy?: 'name' | 'price_low' | 'price_high' | 'newest' | 'rating'
@@ -383,11 +392,18 @@ export interface ProductFilters {
   inStock?: boolean
   featured?: boolean
   type?: string
+  // Enhanced search filters
+  rating?: number
+  specialty?: string
+  constitution?: ('vata' | 'pitta' | 'kapha')[]
+  dosageForm?: string
+  prescriptionRequired?: boolean
 }
 
 export interface ProductSearchResult {
   products: Product[]
   total: number
+  hasMore: boolean
   filters: {
     brands: Array<{ id: string; name: string; count: number }>
     categories: Array<{ id: string; name: string; count: number }>

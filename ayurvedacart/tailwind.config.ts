@@ -34,6 +34,61 @@ const config: Config = {
           800: '#b37d00',
           900: '#996b00',
         },
+        // Saffron Color for Buy Now buttons
+        saffron: {
+          50: '#fffbf0',
+          100: '#fff6dc',
+          200: '#ffedb3',
+          300: '#ffe085',
+          400: '#ffcc47',
+          500: '#F5B000', // Main saffron color
+          600: '#e6a100',
+          700: '#cc8f00',
+          800: '#b37d00',
+          900: '#996b00',
+        },
+        // Emerald shades for medical themes
+        emerald: {
+          50: '#ecfdf5',
+          100: '#d1fae5',
+          200: '#a7f3d0',
+          300: '#6ee7b7',
+          400: '#34d399',
+          500: '#10b981',
+          600: '#059669',
+          700: '#047857',
+          800: '#014421', // Deep emerald
+          900: '#022c14',
+        },
+        // Additional theme colors
+        maroon: {
+          50: '#fdf2f7',
+          100: '#fce7f3',
+          200: '#fbcfe8',
+          300: '#f9a8d4',
+          400: '#f472b6',
+          500: '#ec4899',
+          600: '#db2777',
+          700: '#be185d',
+          800: '#8B1E3F', // Reddish maroon
+          900: '#701a3a',
+        },
+        sage: {
+          50: '#f8faf9',
+          100: '#f1f5f2',
+          200: '#e2ebe5',
+          300: '#c8d6cc',
+          400: '#9db5a3',
+          500: '#7a9981',
+          600: '#5d7864',
+          700: '#4a5f50',
+          800: '#3c4e42',
+          900: '#324038',
+          light: '#f1f5f2',
+        },
+        // Base colors
+        ivory: '#fefdf8',
+        charcoal: '#2c2c2c',
         // UI Colors
         background: '#fefdf8', // Warm cream
         foreground: '#1a1a1a',

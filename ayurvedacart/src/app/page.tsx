@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
+import { getFeaturedSpecialties } from '@/lib/data/medical-specialties'
 import { 
   CheckCircle, 
   Clock, 
@@ -23,6 +24,8 @@ import {
 } from 'lucide-react'
 
 export default function HomePage() {
+  const featuredSpecialties = getFeaturedSpecialties()
+  
   return (
     <div className="min-h-screen bg-background">
 
@@ -216,43 +219,34 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto mb-16">
-            {[
-              { name: 'Cardiology', icon: '❤️', count: '120+ products', color: 'from-red-500 to-pink-500' },
-              { name: 'Dermatology', icon: '🌿', count: '85+ products', color: 'from-green-500 to-emerald-500' },
-              { name: 'Gynecology', icon: '🌸', count: '95+ products', color: 'from-pink-500 to-rose-500' },
-              { name: 'Classical', icon: '📜', count: '200+ products', color: 'from-amber-500 to-orange-500' },
-              { name: 'Gastroenterology', icon: '🫁', count: '110+ products', color: 'from-blue-500 to-cyan-500' },
-              { name: 'General Medicine', icon: '⚕️', count: '150+ products', color: 'from-purple-500 to-violet-500' },
-              { name: 'Neurology', icon: '🧠', count: '75+ products', color: 'from-indigo-500 to-blue-500' },
-              { name: 'Orthopedics', icon: '🦴', count: '90+ products', color: 'from-gray-500 to-slate-500' },
-              { name: 'Endocrinology', icon: '⚖️', count: '65+ products', color: 'from-teal-500 to-cyan-500' },
-              { name: 'Hepatology', icon: '🫀', count: '55+ products', color: 'from-red-600 to-red-500' },
-              { name: 'Nephrology', icon: '🫘', count: '70+ products', color: 'from-yellow-500 to-amber-500' },
-              { name: 'Pulmonology', icon: '🫁', count: '80+ products', color: 'from-sky-500 to-blue-500' },
-            ].map((category, index) => (
-              <Card key={category.name} className="group cursor-pointer border-0 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 bg-white overflow-hidden">
-                <CardContent className="p-6 text-center">
-                  <div className={`w-16 h-16 bg-gradient-to-br ${category.color} rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    {category.icon}
-                  </div>
-                  <h3 className="font-serif font-semibold text-gray-900 mb-2 text-lg group-hover:text-primary-600 transition-colors">
-                    {category.name}
-                  </h3>
-                  <p className="text-sm text-gray-500 mb-3">{category.count}</p>
-                  <div className="flex items-center justify-center text-primary-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span className="text-sm font-medium mr-1">Explore</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </div>
-                </CardContent>
-              </Card>
+            {featuredSpecialties.map((specialty, index) => (
+              <Link key={specialty.id} href={`/specialties/${specialty.slug}`}>
+                <Card className="group cursor-pointer border-0 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 bg-white overflow-hidden">
+                  <CardContent className="p-6 text-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      {specialty.icon}
+                    </div>
+                    <h3 className="font-serif font-semibold text-gray-900 mb-2 text-lg group-hover:text-primary-600 transition-colors">
+                      {specialty.name}
+                    </h3>
+                    <p className="text-sm text-gray-500 mb-3">{specialty.productCount}+ products</p>
+                    <div className="flex items-center justify-center text-primary-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <span className="text-sm font-medium mr-1">Explore</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
 
           <div className="text-center">
-            <Button size="lg" variant="outline" className="px-10 py-4 text-lg font-semibold border-2 hover:bg-primary-50">
-              <Leaf className="w-5 h-5 mr-2" />
-              View All Categories
-            </Button>
+            <Link href="/specialties">
+              <Button size="lg" variant="outline" className="px-10 py-4 text-lg font-semibold border-2 hover:bg-primary-50">
+                <Leaf className="w-5 h-5 mr-2" />
+                View All Specialties
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -319,6 +313,71 @@ export default function HomePage() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-20">
+            <Badge className="mb-6 bg-primary-100 text-primary-700 border-0">
+              <MessageCircle className="w-4 h-4 mr-2" />
+              Common Questions
+            </Badge>
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Get answers to common questions about Ayurvedic medicine, our products, and services.
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="grid gap-6">
+              {[
+                {
+                  question: "Are your Ayurvedic products authentic and safe?",
+                  answer: "Yes, all our products are sourced directly from certified Ayurvedic practitioners and manufacturers. Each product undergoes rigorous quality testing and is certified by relevant authorities including AYUSH ministry approval."
+                },
+                {
+                  question: "How do I know which products are right for my condition?",
+                  answer: "Our qualified Ayurvedic doctors provide free consultations to assess your constitution (Prakriti) and current health status (Vikriti). They recommend personalized treatment plans based on traditional Ayurvedic principles."
+                },
+                {
+                  question: "Do you ship internationally?",
+                  answer: "Yes, we ship to 50+ countries worldwide. Shipping times vary by location (1-7 days typically) and we provide real-time tracking for all orders. Express shipping options are available."
+                },
+                {
+                  question: "Are there any side effects to Ayurvedic medicines?",
+                  answer: "When taken as prescribed, authentic Ayurvedic medicines have minimal side effects. However, we always recommend consulting with our doctors before starting any new treatment, especially if you have existing medical conditions or take other medications."
+                },
+                {
+                  question: "What is your return and refund policy?",
+                  answer: "We offer a 30-day satisfaction guarantee. If you're not completely satisfied with your purchase, you can return unopened products for a full refund. For opened products, we offer exchanges or store credit."
+                }
+              ].map((faq, index) => (
+                <Card key={index} className="border border-gray-200 hover:shadow-md transition-shadow duration-300">
+                  <CardContent className="p-6">
+                    <h3 className="font-semibold text-lg text-gray-900 mb-3">
+                      {faq.question}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <Link href="/faq">
+                <Button size="lg" variant="outline" className="px-10 py-4 text-lg font-semibold border-2 hover:bg-primary-50">
+                  <MessageCircle className="w-5 h-5 mr-2" />
+                  View All FAQs
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

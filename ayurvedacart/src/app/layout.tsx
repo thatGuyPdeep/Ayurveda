@@ -2,8 +2,13 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { CartProvider } from "@/contexts/CartContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { WishlistProvider } from "@/contexts/WishlistContext";
+import CartSidebar from "@/components/cart/CartSidebar";
 import "./globals.css";
 import { AuthInitializer } from '@/components/AuthInitializer'
+import { QueryProvider } from '@/components/QueryProvider'
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -32,6 +37,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://ayurvedaroyale.com"),
   alternates: {
     canonical: "/",
+  },
+  icons: {
+    icon: "/crown-favicon.svg",
+    shortcut: "/crown-favicon.svg",
+    apple: "/crown-favicon.svg",
   },
   openGraph: {
     title: "AyuraVeda Royale - Premium Ayurvedic Products & Royal Wellness",
@@ -79,14 +89,23 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${playfairDisplay.variable} ${inter.variable} font-body antialiased bg-ivory text-charcoal`}>
-        <AuthInitializer />
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
-        </div>
+        <QueryProvider>
+          <AuthProvider>
+            <CartProvider>
+              <WishlistProvider>
+                <AuthInitializer />
+                <div className="flex flex-col min-h-screen">
+                  <Header />
+                  <main className="flex-1">
+                    {children}
+                  </main>
+                  <Footer />
+                </div>
+                <CartSidebar />
+              </WishlistProvider>
+            </CartProvider>
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );

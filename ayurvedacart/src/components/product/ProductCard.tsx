@@ -46,7 +46,7 @@ export function ProductCard({
     : 0
 
   const isOutOfStock = product.stock_quantity <= 0
-  const isLowStock = product.stock_quantity <= product.low_stock_threshold && product.stock_quantity > 0
+  const isLowStock = product.stock_quantity <= (product.low_stock_threshold || 10) && product.stock_quantity > 0
 
   return (
     <Link href={`/products/${product.slug}`} className={className}>
@@ -121,7 +121,7 @@ export function ProductCard({
           {/* Brand */}
           {product.brand && (
             <p className="text-xs text-charcoal/60 font-medium uppercase tracking-wide">
-              {product.brand.name}
+              {typeof product.brand === 'string' ? product.brand : product.brand.name}
             </p>
           )}
 

@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { supabase } from '@/lib/supabase'
+import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import type { User, Session } from '@supabase/supabase-js'
 
 interface AuthStore {
@@ -25,7 +25,7 @@ export const useAuth = create<AuthStore>((set, get) => ({
   signIn: async (email: string, password: string) => {
     set({ loading: true })
     try {
-      if (!process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL === 'https://placeholder.supabase.co') {
+      if (!isSupabaseConfigured()) {
         throw new Error('Supabase not configured. Please set up your environment variables.')
       }
 
@@ -50,7 +50,7 @@ export const useAuth = create<AuthStore>((set, get) => ({
   signUp: async (email: string, password: string, userData: any) => {
     set({ loading: true })
     try {
-      if (!process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL === 'https://placeholder.supabase.co') {
+      if (!isSupabaseConfigured()) {
         throw new Error('Supabase not configured. Please set up your environment variables.')
       }
 
@@ -78,7 +78,7 @@ export const useAuth = create<AuthStore>((set, get) => ({
   signOut: async () => {
     set({ loading: true })
     try {
-      if (!process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL === 'https://placeholder.supabase.co') {
+      if (!isSupabaseConfigured()) {
         // Just clear local state if Supabase is not configured
         set({
           user: null,
@@ -109,7 +109,7 @@ export const useAuth = create<AuthStore>((set, get) => ({
   initialize: async () => {
     try {
       // Check if Supabase is properly configured
-      if (!process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL === 'https://placeholder.supabase.co') {
+      if (!isSupabaseConfigured()) {
         console.warn('Supabase not configured, skipping auth initialization')
         set({ loading: false })
         return
