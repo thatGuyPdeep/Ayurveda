@@ -256,7 +256,7 @@ export class AnalyticsService {
       return {
         product_id: productId,
         views,
-        cart_adds,
+        cart_adds: cartAdds,
         purchases,
         conversion_rate: conversionRate,
         revenue,
@@ -526,7 +526,7 @@ export class AnalyticsService {
     steps: Array<{ step: string; users: number; conversion_rate: number }>
   }> {
     try {
-      const stepData = []
+      const stepData: Array<{ step: string; users: number; conversion_rate: number }> = []
 
       for (let i = 0; i < funnelSteps.length; i++) {
         const step = funnelSteps[i]
@@ -542,7 +542,10 @@ export class AnalyticsService {
         const { data: stepUsers } = await query
         const uniqueUsers = new Set(stepUsers?.map(u => u.user_id)).size
 
-        const conversionRate = i === 0 ? 100 : (uniqueUsers / stepData[0].users) * 100
+        let conversionRate = 100
+        if (i > 0 && stepData.length > 0) {
+          conversionRate = (uniqueUsers / stepData[0].users) * 100
+        }
 
         stepData.push({
           step,

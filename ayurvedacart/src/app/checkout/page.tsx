@@ -103,7 +103,7 @@ export default function CheckoutPage() {
     setIsProcessing(true)
     
     try {
-      // Simulate payment processing
+    // Simulate payment processing
       await new Promise(resolve => setTimeout(resolve, 2000))
       
       // Clear cart and redirect to success page
@@ -111,7 +111,7 @@ export default function CheckoutPage() {
       setCurrentStep(3)
       
       // Redirect to order success page after a delay
-      setTimeout(() => {
+    setTimeout(() => {
         router.push('/account/orders')
       }, 3000)
     } catch (error) {
@@ -349,7 +349,7 @@ export default function CheckoutPage() {
                   <h2 className="text-xl font-semibold text-charcoal flex items-center gap-2">
                     <CreditCard className="h-5 w-5" />
                     Payment Method
-                  </h2>
+          </h2>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handlePaymentSubmit} className="space-y-6">
