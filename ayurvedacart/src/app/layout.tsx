@@ -9,6 +9,7 @@ import CartSidebar from "@/components/cart/CartSidebar";
 import "./globals.css";
 import { AuthInitializer } from '@/components/AuthInitializer'
 import { QueryProvider } from '@/components/QueryProvider'
+import { Toaster } from 'react-hot-toast'
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
@@ -106,6 +107,7 @@ export default function RootLayout({
             </CartProvider>
           </AuthProvider>
         </QueryProvider>
+        <Toaster />
       </body>
     </html>
   );

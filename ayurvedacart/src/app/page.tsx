@@ -242,7 +242,7 @@ export default function HomePage() {
 
           <div className="text-center">
             <Link href="/specialties">
-              <Button size="lg" variant="outline" className="px-10 py-4 text-lg font-semibold border-2 hover:bg-primary-50">
+              <Button size="lg" variant="outline" className="px-10 py-4 text-lg font-semibold border-2 border-emerald-800 text-emerald-800 hover:bg-emerald-800 hover:text-white transition-all duration-300">
                 <Leaf className="w-5 h-5 mr-2" />
                 View All Specialties
               </Button>
@@ -372,7 +372,7 @@ export default function HomePage() {
 
             <div className="text-center mt-12">
               <Link href="/faq">
-                <Button size="lg" variant="outline" className="px-10 py-4 text-lg font-semibold border-2 hover:bg-primary-50">
+                <Button size="lg" variant="outline" className="px-10 py-4 text-lg font-semibold border-2 border-emerald-800 text-emerald-800 hover:bg-emerald-800 hover:text-white transition-all duration-300">
                   <MessageCircle className="w-5 h-5 mr-2" />
                   View All FAQs
                 </Button>

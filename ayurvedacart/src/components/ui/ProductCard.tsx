@@ -10,34 +10,34 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/Card'
 import { QuickViewModal } from '@/components/ui/QuickViewModal'
 import { Heart, ShoppingCart, Star, Eye, Zap } from 'lucide-react'
 import { useCart } from '@/contexts/CartContext'
+import { useWishlist } from '@/contexts/WishlistContext'
+import { toast } from 'react-hot-toast'
 import type { Product } from '@/types'
 
 interface ProductCardProps {
-  product: any // Using any since sample data structure differs
-  className?: string
+  product: Product
   viewMode?: 'grid' | 'list'
 }
 
-export function ProductCard({ 
-  product, 
-  className = '',
-  viewMode = 'grid'
-}: ProductCardProps) {
+export function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
   const { addItem } = useCart()
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist()
   const router = useRouter()
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false)
   
-  const discountPercentage = product.base_price && product.selling_price 
-    ? Math.round(((product.base_price - product.selling_price) / product.base_price) * 100)
-    : 0
+  const discountPercentage = product.discount_percentage || 0
+  const isInStock = product.stock_quantity > 0
+  const brandName = typeof product.brand === 'string' ? product.brand : product.brand?.name || 'Unknown'
+  const imageUrl = product.images?.[0]?.image_url || '/placeholder-product.svg'
+  const isWishlistItem = isInWishlist(product.id)
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    addItem(product, 1)
-    
-    // Simple alert for now - can be replaced with proper toast later
-    console.log(`Added ${product.name} to cart`)
+    if (isInStock) {
+      addItem(product, 1)
+      toast.success(`${product.name} added to cart!`)
+    }
   }
 
   const handleBuyNow = (e: React.MouseEvent) => {
@@ -49,12 +49,17 @@ export function ProductCard({
     router.push('/checkout')
   }
 
-  const handleAddToWishlist = (e: React.MouseEvent) => {
+  const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
     
-    // Simple log for now - wishlist functionality to be implemented
-    console.log(`Added ${product.name} to wishlist`)
+    if (isWishlistItem) {
+      removeFromWishlist(product.id)
+      toast.success('Removed from wishlist')
+    } else {
+      addToWishlist(product)
+      toast.success('Added to wishlist!')
+    }
   }
 
   const handleQuickView = (e: React.MouseEvent) => {
@@ -65,261 +70,167 @@ export function ProductCard({
 
   if (viewMode === 'list') {
     return (
-      <Card className={`group relative overflow-hidden transition-all duration-300 hover:shadow-lg ${className}`}>
-        <div className="flex">
-          <div className="relative w-48 h-48 flex-shrink-0">
-            <Image
-              src={product.images?.[0]?.image_url || '/placeholder-product.svg'}
-              alt={product.name}
-              fill
-              className="object-cover"
-              sizes="192px"
-            />
-            {discountPercentage > 0 && (
-              <Badge className="absolute top-2 left-2 bg-red-500 text-white">
-                -{discountPercentage}%
-              </Badge>
-            )}
-          </div>
-          
-          <div className="flex-1 p-4">
-            <div className="flex justify-between items-start mb-2">
-              <div>
-                <Link href={`/products/${product.slug}`}>
-                  <h3 className="font-semibold text-lg hover:text-emerald-800 transition-colors">
+      <Link href={`/products/${product.slug}`} className="group">
+        <div className="bg-white rounded-xl border border-sage-light hover:shadow-lg transition-all duration-200 p-6">
+          <div className="flex gap-6">
+            {/* Product Image - Fixed Size */}
+            <div className="w-32 h-32 flex-shrink-0 bg-white rounded-lg overflow-hidden border border-sage-light/20">
+              <img
+                src={imageUrl}
+                alt={product.name}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+
+            {/* Product Info */}
+            <div className="flex-1 min-w-0">
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <p className="text-xs text-charcoal/60 mb-1">{brandName}</p>
+                  <h3 className="font-semibold text-charcoal group-hover:text-emerald-800 transition-colors line-clamp-2">
                     {product.name}
                   </h3>
-                </Link>
-                {product.brand && (
-                  <p className="text-sm text-charcoal/60 mb-2">by {product.brand.name}</p>
-                )}
-              </div>
-              
-              <div className="flex flex-col items-end">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xl font-bold text-emerald-800">
-                    ₹{product.selling_price?.toLocaleString()}
-                  </span>
-                  {product.base_price && product.base_price > product.selling_price && (
-                    <span className="text-sm text-charcoal/50 line-through">
-                      ₹{product.base_price.toLocaleString()}
-                    </span>
-                  )}
                 </div>
                 
-                {product.average_rating > 0 && (
-                  <div className="flex items-center gap-1">
-                    <div className="flex">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`w-3 h-3 ${
-                            i < Math.round(product.average_rating)
-                              ? 'text-yellow-400 fill-yellow-400'
-                              : 'text-gray-300'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-xs text-charcoal/60">
-                      ({product.review_count || 0})
-                    </span>
-                  </div>
+                {discountPercentage > 0 && (
+                  <span className="bg-red-100 text-red-600 px-2 py-1 rounded-md text-xs font-semibold">
+                    {discountPercentage}% OFF
+                  </span>
                 )}
               </div>
-            </div>
-            
-            <p className="text-sm text-charcoal/70 mb-4 line-clamp-2">
-              {product.short_description || product.description}
-            </p>
-            
-            <div className="flex items-center justify-between">
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={handleAddToWishlist}
-                >
-                  <Heart className="w-4 h-4" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={handleQuickView}
-                >
-                  <Eye className="w-4 h-4" />
-                </Button>
-              </div>
-              
-              <div className="flex gap-2">
-                <Button
-                  onClick={handleAddToCart}
-                  disabled={product.stock_quantity <= 0}
-                  variant="outline"
-                  size="sm"
-                  className="border-emerald-800 text-emerald-800 hover:bg-emerald-800 hover:text-white"
-                >
-                  <ShoppingCart className="w-4 h-4 mr-2" />
-                  Add to Cart
-                </Button>
-                <Button
-                  onClick={handleBuyNow}
-                  disabled={product.stock_quantity <= 0}
-                  size="sm"
-                  className="bg-saffron-500 hover:bg-saffron-600 text-white"
-                >
-                  <Zap className="w-4 h-4 mr-2" />
-                  Buy Now
-                </Button>
+
+              <p className="text-sm text-charcoal/70 mb-3 line-clamp-2">
+                {product.short_description}
+              </p>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="text-xl font-bold text-emerald-800">₹{product.selling_price.toLocaleString()}</span>
+                  {discountPercentage > 0 && (
+                    <span className="text-sm text-charcoal/50 line-through">₹{product.base_price.toLocaleString()}</span>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleWishlist}
+                    className="p-2 rounded-lg hover:bg-sage-light transition-colors"
+                  >
+                    <Heart className={`h-4 w-4 ${isWishlistItem ? 'fill-red-500 text-red-500' : 'text-charcoal/60 hover:text-red-500'}`} />
+                  </button>
+                  <button
+                    onClick={handleAddToCart}
+                    disabled={!isInStock}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      isInStock
+                        ? 'bg-emerald-800 text-white hover:bg-emerald-700'
+                        : 'bg-sage-light text-charcoal/50 cursor-not-allowed'
+                    }`}
+                  >
+                    <ShoppingCart className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        {isQuickViewOpen && (
-          <QuickViewModal
-            product={product}
-            isOpen={isQuickViewOpen}
-            onClose={() => setIsQuickViewOpen(false)}
-          />
-        )}
-      </Card>
+      </Link>
     )
   }
 
+  // Grid View - Consistent Fixed Dimensions
   return (
-    <Card className={`group relative overflow-hidden transition-all duration-300 hover:shadow-lg bg-white ${className}`}>
-      <Link href={`/products/${product.slug}`}>
-        <CardHeader className="p-0 relative">
-          {/* Product Image */}
-          <div className="relative aspect-square overflow-hidden bg-sage-light/20">
-            <Image
-              src={product.images?.[0]?.image_url || '/placeholder-product.svg'}
-              alt={product.name}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-            
-            {/* Badges */}
-            <div className="absolute top-2 left-2 flex flex-col gap-1">
-              {product.is_featured && (
-                <Badge className="bg-emerald-800 text-white">Featured</Badge>
-              )}
-              {discountPercentage > 0 && (
-                <Badge className="bg-red-500 text-white">-{discountPercentage}%</Badge>
-              )}
-              {product.stock_quantity <= 0 && (
-                <Badge variant="secondary" className="bg-gray-500 text-white">Out of Stock</Badge>
-              )}
+    <Link href={`/products/${product.slug}`} className="group">
+      <div className="bg-white rounded-xl border border-sage-light hover:shadow-lg transition-all duration-200 overflow-hidden h-[420px] flex flex-col">
+        {/* Product Image - Fixed Height */}
+        <div className="relative h-48 bg-white overflow-hidden">
+          <img
+            src={imageUrl}
+            alt={product.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          
+          {/* Wishlist Button */}
+          <button
+            onClick={handleWishlist}
+            className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur rounded-full hover:bg-white transition-colors"
+          >
+            <Heart className={`h-4 w-4 ${isWishlistItem ? 'fill-red-500 text-red-500' : 'text-charcoal/60 hover:text-red-500'}`} />
+          </button>
+
+          {/* Discount Badge */}
+          {discountPercentage > 0 && (
+            <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-md text-xs font-semibold">
+              {discountPercentage}% OFF
             </div>
+          )}
 
-            {/* Action Buttons */}
-            <div className="absolute top-2 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={handleAddToWishlist}
-                className="h-8 w-8 bg-white/90 border-0 hover:bg-white"
-              >
-                <Heart className="h-4 w-4" />
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={handleQuickView}
-                className="h-8 w-8 bg-white/90 border-0 hover:bg-white"
-              >
-                <Eye className="h-4 w-4" />
-              </Button>
+          {/* Stock Status */}
+          {!isInStock && (
+            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+              <span className="bg-white text-charcoal px-3 py-1 rounded-md font-semibold">Out of Stock</span>
             </div>
-          </div>
-        </CardHeader>
-      </Link>
-
-      <CardContent className="p-4">
-        {/* Brand */}
-        {product.brand && (
-          <p className="text-xs text-charcoal/60 mb-1 uppercase tracking-wide">
-            {product.brand.name}
-          </p>
-        )}
-
-        {/* Product Name */}
-        <Link href={`/products/${product.slug}`}>
-          <h3 className="font-semibold text-charcoal hover:text-emerald-800 transition-colors mb-2 line-clamp-2">
-            {product.name}
-          </h3>
-        </Link>
-
-        {/* Rating */}
-        {product.average_rating > 0 && (
-          <div className="flex items-center gap-1 mb-3">
-            <div className="flex">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-3 h-3 ${
-                    i < Math.round(product.average_rating)
-                      ? 'text-yellow-400 fill-yellow-400'
-                      : 'text-gray-300'
-                  }`}
-                />
-              ))}
-            </div>
-            <span className="text-xs text-charcoal/60">
-              ({product.review_count || 0})
-            </span>
-          </div>
-        )}
-
-        {/* Price */}
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-lg font-bold text-emerald-800">
-            ₹{product.selling_price?.toLocaleString()}
-          </span>
-          {product.base_price && product.base_price > product.selling_price && (
-            <span className="text-sm text-charcoal/50 line-through">
-              ₹{product.base_price.toLocaleString()}
-            </span>
           )}
         </div>
-      </CardContent>
 
-      <CardFooter className="p-4 pt-0 space-y-2">
-        <div className="grid grid-cols-2 gap-2 w-full">
-          <Button
-            onClick={handleAddToCart}
-            disabled={product.stock_quantity <= 0}
-            variant="outline"
-            size="sm"
-            className="border-emerald-800 text-emerald-800 hover:bg-emerald-800 hover:text-white"
-          >
-            <ShoppingCart className="w-4 h-4 mr-1" />
-            Add to Cart
-          </Button>
-          <Button
-            onClick={handleBuyNow}
-            disabled={product.stock_quantity <= 0}
-            size="sm"
-            className="bg-saffron-500 hover:bg-saffron-600 text-white"
-          >
-            <Zap className="w-4 h-4 mr-1" />
-            Buy Now
-          </Button>
+        {/* Product Info - Fixed Layout */}
+        <div className="p-4 flex-1 flex flex-col">
+          {/* Brand */}
+          <p className="text-xs text-charcoal/60 mb-1">{brandName}</p>
+          
+          {/* Product Name - Fixed Height with Ellipsis */}
+          <h3 className="font-semibold text-charcoal group-hover:text-emerald-800 transition-colors mb-2 line-clamp-2 h-12 leading-6">
+            {product.name}
+          </h3>
+
+          {/* Description - Fixed Height */}
+          <p className="text-sm text-charcoal/70 mb-3 line-clamp-3 h-16 leading-5">
+            {product.short_description}
+          </p>
+
+          {/* Rating */}
+          {product.average_rating && (
+            <div className="flex items-center gap-1 mb-3">
+              <div className="flex">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`h-3 w-3 ${i < Math.round(product.average_rating!) ? 'fill-saffron-500 text-saffron-500' : 'text-sage-light'}`}
+                  />
+                ))}
+              </div>
+              <span className="text-xs text-charcoal/60">({product.review_count})</span>
+            </div>
+          )}
+
+          {/* Price Section - Bottom Aligned */}
+          <div className="mt-auto">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-bold text-emerald-800">₹{product.selling_price.toLocaleString()}</span>
+                {discountPercentage > 0 && (
+                  <span className="text-sm text-charcoal/50 line-through">₹{product.base_price.toLocaleString()}</span>
+                )}
+              </div>
+            </div>
+
+            {/* Add to Cart Button */}
+            <button
+              onClick={handleAddToCart}
+              disabled={!isInStock}
+              className={`w-full py-2 px-4 rounded-lg text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 ${
+                isInStock
+                  ? 'bg-emerald-800 text-white hover:bg-emerald-700 hover:shadow-md'
+                  : 'bg-sage-light text-charcoal/50 cursor-not-allowed'
+              }`}
+            >
+              <ShoppingCart className="h-4 w-4" />
+              {isInStock ? 'Add to Cart' : 'Out of Stock'}
+            </button>
+          </div>
         </div>
-        {product.stock_quantity <= 0 && (
-          <p className="text-sm text-red-500 text-center w-full">Out of Stock</p>
-        )}
-      </CardFooter>
-
-      {isQuickViewOpen && (
-        <QuickViewModal
-          product={product}
-          isOpen={isQuickViewOpen}
-          onClose={() => setIsQuickViewOpen(false)}
-        />
-      )}
-    </Card>
+      </div>
+    </Link>
   )
 }
 
